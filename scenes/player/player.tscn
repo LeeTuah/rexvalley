@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://bctd65a0ob5g3"]
+
+[ext_resource type="Script" uid="uid://cfleorhu77pdc" path="res://scenes/player/player.gd" id="1_dovo2"]
+[ext_resource type="Texture2D" uid="uid://cquj8u7riakrn" path="res://assets/player_spritesheet_idle.png" id="2_dovo2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
+atlas = ExtResource("2_dovo2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lvxji"]
+atlas = ExtResource("2_dovo2")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p47bc"]
+atlas = ExtResource("2_dovo2")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_01hqx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmlin")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lvxji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p47bc")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 2.5
+}]
+
+[node name="player" type="CharacterBody2D" unique_id=1387465769]
+script = ExtResource("1_dovo2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1730063195]
+texture_filter = 1
+scale = Vector2(4.5, 4.5)
+sprite_frames = SubResource("SpriteFrames_01hqx")
+animation = &"idle"
+frame = 1
+frame_progress = 0.51715094
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=609036338]
+polygon = PackedVector2Array(0, 54, -40, 54, -63, 22, -63, -13, -9, -49, 32, -49, 68, -45, 68, -28, 50, 11)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
+position = Vector2(0, -175)
+position_smoothing_enabled = true
