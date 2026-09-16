@@ -53,6 +53,12 @@ func _process(delta: float):
 	else:
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
 
+	if not can_input:
+		idle_time += delta
+		if idle_time >= cooldown:
+			can_input = true
+			idle_time = 0.0 # Reset clock after cooldown ends
+
 	if can_input:
 		if (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1")
@@ -68,13 +74,10 @@ func _process(delta: float):
 			
 			else:
 				animated_sprite.play("walk");
+		
+		else:
+			animated_sprite.play("idle")
 
-		
-	if idle_time >= cooldown:
-		animated_sprite.play("idle");
-		can_input = true
-		
-	idle_time += delta
 
 	if (Input.is_action_just_pressed("ui_look_down")):
 		if ($Camera2D.position.y == CAMERA_DEFAULT_POS):
