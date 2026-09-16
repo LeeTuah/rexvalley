@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cfleorhu77pdc" path="res://scenes/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://cquj8u7riakrn" path="res://assets/player_spritesheet_idle.png" id="2_dovo2"]
+[ext_resource type="Texture2D" uid="uid://c5gnxg5emrcog" path="res://assets/player_spritesheet_walk.png" id="3_gmlin"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
 atlas = ExtResource("2_dovo2")
@@ -14,6 +15,62 @@ region = Rect2(32, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_p47bc"]
 atlas = ExtResource("2_dovo2")
 region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75vfm"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0owmy"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qek5x"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gtgg"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h17s1"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je7p5"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fm80t"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx1jg"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugbui"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcs02"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myrg7"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvlxm"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf5tr"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgqa7"]
+atlas = ExtResource("3_gmlin")
+region = Rect2(224, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_01hqx"]
 animations = [{
@@ -30,7 +87,117 @@ animations = [{
 "loop": 1,
 "name": &"idle",
 "speed": 2.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75vfm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0owmy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qek5x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gtgg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h17s1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_je7p5")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fm80t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx1jg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugbui")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcs02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myrg7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvlxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf5tr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lgqa7")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 13.0
 }]
+
+[sub_resource type="Animation" id="Animation_dovo2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -200)]
+}
+
+[sub_resource type="Animation" id="Animation_gmlin"]
+resource_name = "camera_moving"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.35, 0.5358879),
+"update": 0,
+"values": [Vector2(0, -200), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lvxji"]
+resource_name = "camera_moving_up"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.349, 0.535),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -200)]
+}
+
+[sub_resource type="Animation" id="Animation_8ydkj"]
+resource_name = "screen_shake"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
+_data = {
+&"RESET": SubResource("Animation_dovo2"),
+&"camera_moving_down": SubResource("Animation_gmlin"),
+&"camera_moving_up": SubResource("Animation_lvxji"),
+&"screen_shake": SubResource("Animation_8ydkj")
+}
 
 [node name="player" type="CharacterBody2D" unique_id=1387465769]
 script = ExtResource("1_dovo2")
@@ -39,13 +206,17 @@ script = ExtResource("1_dovo2")
 texture_filter = 1
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
-animation = &"idle"
+animation = &"walk"
 frame = 1
-frame_progress = 0.51715094
+frame_progress = 0.5457266
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=609036338]
-polygon = PackedVector2Array(0, 54, -40, 54, -63, 22, -63, -13, -9, -49, 32, -49, 68, -45, 68, -28, 50, 11)
+visible = false
+polygon = PackedVector2Array(4, 58, -44, 58, -67, 17, -67, -17, -9, -54, 31, -54, 68, -45, 68, -28, 50, 11)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
-position = Vector2(0, -175)
-position_smoothing_enabled = true
+position = Vector2(0, -200)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=357818277]
+root_node = NodePath("../Camera2D")
+libraries/ = SubResource("AnimationLibrary_lvxji")
