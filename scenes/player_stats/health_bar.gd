@@ -9,5 +9,5 @@ func _ready() -> void:
 
 func change_player_health(curr_health):
 	value = curr_health
-	print("Current health : ", value)
+	print(value)
 	

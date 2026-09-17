@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bctd65a0ob5g3" path="res://scenes/player/player.tscn" id="1_70yv6"]
 [ext_resource type="Script" uid="uid://h1c73dfxafel" path="res://game_manager.gd" id="1_smx3j"]
 [ext_resource type="PackedScene" uid="uid://bm8s4h5i3c4oe" path="res://scenes/player_stats/health_bar.tscn" id="3_o2178"]
-[ext_resource type="Texture2D" uid="uid://5t4r6kwkvr5o" path="res://assets/health_bar_empty.png" id="4_d5upp"]
+[ext_resource type="PackedScene" uid="uid://ch5kqc4mtaakt" path="res://scenes/player_stats/stamina_bar.tscn" id="5_vk86k"]
 
 [node name="game_manager" type="Node2D" unique_id=757637544]
 script = ExtResource("1_smx3j")
@@ -16,7 +16,11 @@ position = Vector2(787, 686)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1138046388]
 
 [node name="health_bar" parent="CanvasLayer" unique_id=637997677 instance=ExtResource("3_o2178")]
-texture_filter = 1
-offset_right = 1361.0
-offset_bottom = 152.0
-texture_under = ExtResource("4_d5upp")
+offset_right = 114.2
+offset_bottom = 32.0
+
+[node name="stamina_bar" parent="CanvasLayer" unique_id=904279260 instance=ExtResource("5_vk86k")]
+offset_left = -1.0000004
+offset_top = 144.0
+offset_right = 92.19994
+offset_bottom = 176.0

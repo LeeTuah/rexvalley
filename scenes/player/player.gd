@@ -10,6 +10,11 @@ const CAMERA_DEFAULT_POS = -200.0
 var idle_time = 0.0;
 const ATTACK_COOLDOWN = 0.4;
 
+var can_run = true
+var sprint_timer = 0.0;
+const sprint_cooldown = 3.0
+
+
 var current_combo_counter = 0;
 const MAX_COMBO = 3;
 var queue_next_combo = false;
@@ -27,6 +32,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and can_input:
 		velocity.y = JUMP_VELOCITY
+		global.current_stamina -= 1.5
 	
 	var direction := Input.get_axis("ui_left", "ui_right")
 
@@ -35,12 +41,12 @@ func _physics_process(delta: float) -> void:
 
 	var speed = last_speed;
 
-	if (Input.is_action_pressed("ui_sprint")):
+	if (Input.is_action_pressed("ui_sprint") and can_run):
 		speed = move_toward(speed, SPEED * ACCN, SPEED / 15.0);
 		last_speed = speed;
 		sprint_key_released = false;
 
-	if (Input.is_action_just_released(("ui_sprint"))):
+	if (Input.is_action_just_released(("ui_sprint")) or not can_run):
 		sprint_key_released = true;
 
 	if (sprint_key_released):
@@ -61,6 +67,14 @@ func _process(delta: float):
 	if velocity.x != 0:
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
 
+
+	if not can_run:
+		print("Inside not can run")
+		sprint_timer += delta
+		if sprint_timer >= sprint_cooldown:
+			can_run = true
+	
+
 	if can_input:
 		if (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1")
@@ -73,20 +87,23 @@ func _process(delta: float):
 			pass # jump animation
 
 		elif ((Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right")) and is_on_floor()):
-			if (Input.is_action_pressed("ui_sprint")):
-				animated_sprite.play("run");
+			if ((Input.is_action_pressed("ui_sprint")) and (global.current_stamina > 0) and (can_run)):
+				print("Inside running")
+				animated_sprite.play("run")
+				global.current_stamina -= 1.5 * delta
+
+				if global.current_stamina == 0:
+					can_run = false
+					sprint_timer = 0.0
 			
 			else:
 				animated_sprite.play("walk");
+				if can_run:
+					global.current_stamina += 2.134 * delta
 		
-		elif Input.is_action_just_pressed("ui_up"):
-			global.current_health += 1
-		
-		elif Input.is_action_just_pressed("ui_down"):
-			global.current_health -= 1
-		
-		else:
+		elif is_on_floor():
 			animated_sprite.play("idle");
+			global.current_stamina += 2.134 * delta
 
 	else:
 		idle_time += delta
