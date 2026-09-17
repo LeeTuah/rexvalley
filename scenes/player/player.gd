@@ -79,6 +79,12 @@ func _process(delta: float):
 			else:
 				animated_sprite.play("walk");
 		
+		elif Input.is_action_just_pressed("ui_up"):
+			global.current_health += 1
+		
+		elif Input.is_action_just_pressed("ui_down"):
+			global.current_health -= 1
+		
 		else:
 			animated_sprite.play("idle");
 

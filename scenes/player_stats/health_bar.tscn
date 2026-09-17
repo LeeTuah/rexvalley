@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bm8s4h5i3c4oe"]
+
+[ext_resource type="Script" uid="uid://epk2t86syivn" path="res://scenes/player_stats/health_bar.gd" id="1_3jo6m"]
+[ext_resource type="Texture2D" uid="uid://bof2qq2o0avw3" path="res://assets/health_bar.png" id="1_syufh"]
+
+[node name="health_bar" type="TextureProgressBar" unique_id=637997677]
+texture_filter = 1
+offset_right = 1057.0
+offset_bottom = 66.0
+scale = Vector2(5, 5)
+texture_progress = ExtResource("1_syufh")
+script = ExtResource("1_3jo6m")
