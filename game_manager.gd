@@ -4,17 +4,22 @@ const SCR_WIDTH = 1600;
 const SCR_HEIGHT = 900;
 
 var ground_floor_scene = preload("res://scenes/floor/ground_floor.tscn");
+var dirt_floor_scene = preload("res://scenes/floor/dirt_floor.tscn");
 const GROUND_Y = 856.0;
 
 var leftmost_tile_x = 0.0;
 var rightmost_tile_x = 0.0;
 
-const GROUND_TILE_LENGTH = 194.0;
+const GROUND_TILE_LENGTH = 32.0 * 3.0;
 
 func make_new_tile(x: float, y: float) -> void:
 	var ground_floor_instance = ground_floor_scene.instantiate();
 	ground_floor_instance.position = Vector2(x, y);
 	get_tree().current_scene.get_node("terrain").add_child(ground_floor_instance);
+
+	var dirt_floor_instance = dirt_floor_scene.instantiate();
+	dirt_floor_instance.position = Vector2(x, y + GROUND_TILE_LENGTH);
+	get_tree().current_scene.get_node("terrain").add_child(dirt_floor_instance);
 
 func generate_initial_terrain() -> void:
 	const TILE_HALFLENGTH = GROUND_TILE_LENGTH / 2.0;

@@ -12,8 +12,10 @@ const ATTACK_COOLDOWN = 0.4;
 
 var can_run = true
 var sprint_timer = 0.0;
-const sprint_cooldown = 3.0
+const SPRINT_COOLDOWN = 3.0
 
+const STAMINA_DECREASE_RATE = 2;
+const STAMINA_INCREASE_RATE = 2.3;
 
 var current_combo_counter = 0;
 const MAX_COMBO = 3;
@@ -30,9 +32,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and can_input:
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and can_input and global.current_stamina >= STAMINA_DECREASE_RATE * 1.5:
 		velocity.y = JUMP_VELOCITY
-		global.current_stamina -= 1.5
+		global.current_stamina -= STAMINA_DECREASE_RATE * 1.5
 	
 	var direction := Input.get_axis("ui_left", "ui_right")
 
@@ -67,17 +69,14 @@ func _process(delta: float):
 	if velocity.x != 0:
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
 
-
 	if not can_run:
-		print("Inside not can run")
 		sprint_timer += delta
-		if sprint_timer >= sprint_cooldown:
+		if sprint_timer >= SPRINT_COOLDOWN:
 			can_run = true
-	
 
 	if can_input:
 		if (Input.is_action_just_pressed("ui_attack")):
-			animated_sprite.play("sword_slash1")
+			animated_sprite.play("sword_slash1");
 			current_combo_counter = 1;
 
 			can_input = false;
@@ -88,9 +87,8 @@ func _process(delta: float):
 
 		elif ((Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right")) and is_on_floor()):
 			if ((Input.is_action_pressed("ui_sprint")) and (global.current_stamina > 0) and (can_run)):
-				print("Inside running")
 				animated_sprite.play("run")
-				global.current_stamina -= 1.5 * delta
+				global.current_stamina -= STAMINA_DECREASE_RATE * delta
 
 				if global.current_stamina == 0:
 					can_run = false
@@ -99,11 +97,11 @@ func _process(delta: float):
 			else:
 				animated_sprite.play("walk");
 				if can_run:
-					global.current_stamina += 2.134 * delta
+					global.current_stamina += STAMINA_INCREASE_RATE * delta
 		
 		elif is_on_floor():
 			animated_sprite.play("idle");
-			global.current_stamina += 2.134 * delta
+			global.current_stamina += STAMINA_INCREASE_RATE * delta
 
 	else:
 		idle_time += delta
@@ -116,7 +114,7 @@ func _process(delta: float):
 				can_input = false;
 
 				current_combo_counter += 1;
-				animated_sprite.play("sword_slash" + str(current_combo_counter)); # temporary, will be changed with more sword animations
+				animated_sprite.play("sword_slash" + str(current_combo_counter));
 
 		elif (Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO):
 			queue_next_combo = true;
@@ -127,7 +125,5 @@ func _process(delta: float):
 
 		else:
 			$AnimationPlayer.play("camera_moving_up");
-
-	
 
 	global.player_position = position;

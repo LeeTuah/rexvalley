@@ -11,4 +11,4 @@ func _ready() -> void:
 
 func change_player_stamina(curr_stamina):
 	value = curr_stamina
-	print("Current Stamina = ", value)
+	# print("Current Stamina = ", value)

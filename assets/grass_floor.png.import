@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pfhkyv2dy25d"
-path="res://.godot/imported/stamina_bar_empty-export.png-72c796b29202ff397186036bb6a63131.ctex"
+uid="uid://d0plc6iwm5hpx"
+path="res://.godot/imported/grass_floor.png-d3ce1ef22a69cfb2cd9f566bb11055d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/stamina_bar_empty-export.png"
-dest_files=["res://.godot/imported/stamina_bar_empty-export.png-72c796b29202ff397186036bb6a63131.ctex"]
+source_file="res://assets/grass_floor.png"
+dest_files=["res://.godot/imported/grass_floor.png-d3ce1ef22a69cfb2cd9f566bb11055d1.ctex"]
 
 [params]
 

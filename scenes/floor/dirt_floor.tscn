@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cx6u6348o4c5e"]
+
+[ext_resource type="Texture2D" uid="uid://bd68nk3vps72e" path="res://assets/dirt.png" id="1_2nlq6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
+size = Vector2(96, 96)
+
+[node name="dirt_floor" type="Area2D" unique_id=935378867]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2010177641]
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("1_2nlq6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1761859524]
+shape = SubResource("RectangleShape2D_nrgbc")

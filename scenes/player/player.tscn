@@ -287,9 +287,9 @@ texture_filter = 1
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
 animation = &"idle"
+frame_progress = 0.11815328
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=609036338]
-visible = false
 polygon = PackedVector2Array(4, 58, -44, 58, -67, 17, -67, -17, -9, -54, 31, -54, 68, -45, 68, -28, 50, 11)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
