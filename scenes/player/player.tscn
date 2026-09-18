@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c5gnxg5emrcog" path="res://assets/player_spritesheet_walk.png" id="3_gmlin"]
 [ext_resource type="Texture2D" uid="uid://b1yk6qvu5p034" path="res://assets/player_sword_slash1.png" id="4_lvxji"]
 [ext_resource type="Texture2D" uid="uid://beia8anoec13j" path="res://assets/player_sword_slash2.png" id="5_p47bc"]
+[ext_resource type="Texture2D" uid="uid://r14mtuip3qcv" path="res://assets/player_spritesheet_thrust.png" id="6_75vfm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
 atlas = ExtResource("2_dovo2")
@@ -77,6 +78,34 @@ region = Rect2(192, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_28m0y"]
 atlas = ExtResource("5_p47bc")
 region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uniwh"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqsei"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tffgl"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pk8ii"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mf0n"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hvnv"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbmj2"]
+atlas = ExtResource("6_75vfm")
+region = Rect2(384, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fm80t"]
 atlas = ExtResource("3_gmlin")
@@ -193,6 +222,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_uniwh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqsei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tffgl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pk8ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mf0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hvnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbmj2")
+}],
+"loop": 0,
+"name": &"thrust",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_fm80t")
 }, {
 "duration": 1.0,
@@ -286,8 +341,7 @@ script = ExtResource("1_dovo2")
 texture_filter = 1
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
-animation = &"idle"
-frame_progress = 0.11815328
+animation = &"thrust"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=609036338]
 polygon = PackedVector2Array(4, 58, -44, 58, -67, 17, -67, -17, -9, -54, 31, -54, 68, -45, 68, -28, 50, 11)
@@ -298,3 +352,5 @@ position = Vector2(0, -200)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=357818277]
 root_node = NodePath("../Camera2D")
 libraries/ = SubResource("AnimationLibrary_lvxji")
+
+[connection signal="sprite_frames_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_sprite_frames_changed"]

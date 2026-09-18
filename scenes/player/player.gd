@@ -8,7 +8,9 @@ const JUMP_VELOCITY = -400.0
 const CAMERA_DEFAULT_POS = -200.0
 
 var idle_time = 0.0;
+var thrust_idle_time = 0.0;
 const ATTACK_COOLDOWN = 0.4;
+const THRUST_COOLDOWN = 0.5;
 
 var can_run = true
 var sprint_timer = 0.0;
@@ -27,6 +29,10 @@ var sprint_key_released = false;
 #arektu kom hole bhalo heo bojhai jache na tahole
 
 var can_input = true
+var direction :int= 1
+var thrust_direction = 1;
+
+var cannot_input_animation = ["sword_slash_1","sword_slash_2","sword_slash_3","thrust"];
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -36,11 +42,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		global.current_stamina -= STAMINA_DECREASE_RATE * 1.5
 	
-	var direction := Input.get_axis("ui_left", "ui_right")
-
-	if not can_input:
-		direction = 0
-
+	direction = Input.get_axis("ui_left", "ui_right")
+	if (direction != 0): thrust_direction = direction;
+	if (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
+		velocity.x = thrust_direction * SPEED * 130 * delta;
+		move_and_slide();
+	#if not can_input:
+		#direction = 0
 	var speed = last_speed;
 
 	if (Input.is_action_pressed("ui_sprint") and can_run):
@@ -64,6 +72,9 @@ func _physics_process(delta: float) -> void:
 
 func _ready() -> void:
 	global.player_position = position;
+	#animated_sprite.connect("sprite_frames_changed",_on_animated_sprite_2d_sprite_frames_changed);
+	
+	
 
 func _process(delta: float):
 	if velocity.x != 0:
@@ -78,10 +89,12 @@ func _process(delta: float):
 		if (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1");
 			current_combo_counter = 1;
-
 			can_input = false;
 			idle_time = 0.0;
-
+		elif (Input.is_action_just_pressed("ui_thrust")):
+			animated_sprite.play(("thrust"));
+			can_input = false;
+			thrust_idle_time = 0.0;
 		elif (Input.is_action_just_pressed("ui_accept")):
 			pass # jump animation
 
@@ -102,23 +115,36 @@ func _process(delta: float):
 		elif is_on_floor():
 			animated_sprite.play("idle");
 			global.current_stamina += STAMINA_INCREASE_RATE * delta
-
+	
 	else:
-		idle_time += delta
-		if idle_time >= ATTACK_COOLDOWN:
-			can_input = true;
-			idle_time = 0.0;
+		
+		match animated_sprite.animation:
+			"thrust":
+				thrust_idle_time += delta
+				if thrust_idle_time >= THRUST_COOLDOWN:
+					can_input = true;
+					thrust_idle_time = 0.0;
+				
+			"sword_slash1","sword_slash2","sword_slash3":
+				idle_time += delta
+				
+				if idle_time >= ATTACK_COOLDOWN:
+					can_input = true;
+					idle_time = 0.0; 
+					
+				elif (Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO):
+					queue_next_combo = true;
+					
+				if (queue_next_combo):
+					queue_next_combo = false;
+					can_input = false;
+					idle_time = 0.0;
 
-			if (queue_next_combo):
-				queue_next_combo = false;
-				can_input = false;
-
-				current_combo_counter += 1;
-				animated_sprite.play("sword_slash" + str(current_combo_counter));
-
-		elif (Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO):
-			queue_next_combo = true;
-
+					current_combo_counter += 1;
+					animated_sprite.play("sword_slash" + str(current_combo_counter));
+				
+		
+	
 	if (Input.is_action_just_pressed("ui_look_down")):
 		if ($Camera2D.position.y == CAMERA_DEFAULT_POS):
 			$AnimationPlayer.play("camera_moving_down");
