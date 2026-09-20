@@ -1,15 +1,12 @@
 extends Area2D
 
+var SPEED = 1200;
+var direction;
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	direction = global.player_direction;
+	$Fireball.flip_h = direction < 0; 
 
-var SPEED = 1000;
-var direction = global.player_direction;
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	if direction < 0:
-		$Fireball.flip_h = true;
 	position.x += direction * SPEED * delta;
 	
