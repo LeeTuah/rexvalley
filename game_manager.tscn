@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://bcbjkqylmron8" path="res://assets/background_1.png" id="2_vk86k"]
 [ext_resource type="PackedScene" uid="uid://bm8s4h5i3c4oe" path="res://scenes/player_stats/health_bar.tscn" id="3_o2178"]
 [ext_resource type="PackedScene" uid="uid://ch5kqc4mtaakt" path="res://scenes/player_stats/stamina_bar.tscn" id="5_vk86k"]
+[ext_resource type="Texture2D" uid="uid://1dk8ldij4tnx" path="res://assets/mana_bar_empty.png" id="6_8jrwq"]
+[ext_resource type="Texture2D" uid="uid://b4hk5wwyw3t75" path="res://assets/mana_bar.png" id="7_gth8u"]
+[ext_resource type="Script" uid="uid://djtwd7qq5of13" path="res://scenes/player_stats/mana_bar.gd" id="8_dq8jp"]
 
 [node name="game_manager" type="Node2D" unique_id=757637544]
 script = ExtResource("1_smx3j")
@@ -23,7 +26,8 @@ position = Vector2(787, 686)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1138046388]
 
 [node name="health_bar" parent="CanvasLayer" unique_id=637997677 instance=ExtResource("3_o2178")]
-offset_right = 114.2
+offset_left = -0.6
+offset_right = 113.6
 offset_bottom = 32.0
 
 [node name="stamina_bar" parent="CanvasLayer" unique_id=904279260 instance=ExtResource("5_vk86k")]
@@ -31,5 +35,17 @@ offset_left = -1.0000004
 offset_top = 144.0
 offset_right = 92.19994
 offset_bottom = 176.0
+
+[node name="mana_bar" type="TextureProgressBar" parent="CanvasLayer" unique_id=2087966024]
+texture_filter = 1
+offset_left = 8.6
+offset_top = 304.0
+offset_right = 120.6
+offset_bottom = 360.0
+scale = Vector2(2.5, 2.5)
+texture_under = ExtResource("6_8jrwq")
+texture_progress = ExtResource("7_gth8u")
+texture_progress_offset = Vector2(48, 21.7)
+script = ExtResource("8_dq8jp")
 
 [node name="Fireball" type="Node" parent="." unique_id=1127337835]

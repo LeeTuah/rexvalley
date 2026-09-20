@@ -23,5 +23,5 @@ var current_stamina:float = MAX_STAMINA:
 
 var current_mana:float = MAX_MANA:
 	set(value):
-		current_stamina = clampf(value, 0.0, MAX_MANA);
+		current_mana = clampf(value, 0.0, MAX_MANA);
 		mana_changed.emit(current_mana);

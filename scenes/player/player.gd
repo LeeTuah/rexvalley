@@ -24,6 +24,7 @@ const SPRINT_COOLDOWN = 3.0
 
 const STAMINA_DECREASE_RATE = 4;
 const STAMINA_INCREASE_RATE = 4.6;
+const MANA_INCREASE_RATE = 2.3;
 
 var current_combo_counter = 0;
 const MAX_COMBO = 3;
@@ -88,6 +89,9 @@ func _ready() -> void:
 var fireball_instance;
 
 func _process(delta: float):
+	
+	global.current_mana += MANA_INCREASE_RATE * delta;
+	
 	# flipping animated sprite
 	if velocity.x != 0:
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
@@ -110,12 +114,12 @@ func _process(delta: float):
 		# magic attacks
 		elif (Input.is_action_pressed("magic_initiate")):
 			# fireball
-			if (Input.is_action_just_pressed("magic_fireball") and (global.current_stamina > 20)):
+			if (Input.is_action_just_pressed("magic_fireball") and (global.current_mana > 20)):
 				animated_sprite.play("fireball_1");
 				can_input = false;
 				
 				idle_time = 0.0;
-				global.current_stamina -= 14;
+				global.current_mana -= 14;
 		
 		# thrust attack
 		elif (Input.is_action_just_released("ui_thrust") and global.current_stamina >= 30):
