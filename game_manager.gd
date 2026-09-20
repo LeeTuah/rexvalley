@@ -5,6 +5,8 @@ const SCR_HEIGHT = 900;
 
 var ground_floor_scene = preload("res://scenes/floor/ground_floor.tscn");
 var dirt_floor_scene = preload("res://scenes/floor/dirt_floor.tscn");
+
+
 const GROUND_Y = 856.0;
 
 var leftmost_tile_x = 0.0;
@@ -20,6 +22,7 @@ func make_new_tile(x: float, y: float) -> void:
 	var dirt_floor_instance = dirt_floor_scene.instantiate();
 	dirt_floor_instance.position = Vector2(x, y + GROUND_TILE_LENGTH);
 	get_tree().current_scene.get_node("terrain").add_child(dirt_floor_instance);
+
 
 func generate_initial_terrain() -> void:
 	const TILE_HALFLENGTH = GROUND_TILE_LENGTH / 2.0;
@@ -47,6 +50,12 @@ func generate_new_terrain():
 
 func _ready() -> void:
 	generate_initial_terrain();
+	
 
 func _process(_delta: float) -> void:
 	generate_new_terrain();
+	#$Parallax2D.position.x = get_node("player").position.x;
+	#$Parallax2D.position.y = (get_node("player").position.y)*0.3 + 340;
+	$background_summer.position.x = get_node("player").position.x;
+	$background_summer.position.y = (get_node("player").position.y)*0.3 + 270;
+	

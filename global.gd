@@ -6,6 +6,7 @@ signal stamina_changed(curr_stamina)
 const MAX_HEALTH:float = 100.0
 const MAX_STAMINA:float = 50.0
 
+var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0)
 var current_health:float = MAX_HEALTH:
 	set(value):
