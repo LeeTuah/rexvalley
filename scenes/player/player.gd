@@ -19,7 +19,7 @@ var IDLE_TIMES = {
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
 	"shield": 		1.67
-}
+};
 var MAGIC_ANIMATIONS = ["fireball_1","fireball_2","shield"];
 
 var can_run = true;
@@ -40,6 +40,12 @@ var sprint_key_released = false;
 var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
+
+func disable_all_hitboxes():
+	$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
+	$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
+	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
+	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -99,6 +105,7 @@ func _process(delta: float):
 	# flipping animated sprite
 	if velocity.x != 0:
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
+		$sword_hitbox.scale.x = -1 if velocity.x < 0 else 1;
 
 	# sprint cooldown
 	if not can_run:
@@ -114,6 +121,7 @@ func _process(delta: float):
 
 			can_input = false;
 			idle_time = 0.0;
+			$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", false);
 
 		# magic attacks
 		elif (Input.is_action_pressed("magic_initiate")):
@@ -143,6 +151,7 @@ func _process(delta: float):
 
 			idle_time = 0.0;
 			global.current_stamina -= 30;
+			$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", false);
 		
 		# jump attack
 		elif (Input.is_action_just_pressed("ui_accept")):
@@ -172,40 +181,49 @@ func _process(delta: float):
 		
 	
 	else:
-			idle_time += delta;
+		idle_time += delta;
+		
+		var anim = animated_sprite.animation;
+		if idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
+			idle_time = 0.0; 
+
+			if (anim == "fireball_1"):
+				# creates a new fireball
+				fireball_instance = fireball_scene.instantiate();
+				fireball_instance.position = position;
+
+				# plays the second animation part 
+				get_parent().get_node("Fireball").add_child(fireball_instance);
+				animated_sprite.play("fireball_2");
 			
-			var anim = animated_sprite.animation;
-			if idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
-				idle_time = 0.0; 
+			# queues next colbo
+			elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
+				queue_next_combo = false;
+				current_combo_counter += 1;
+				animated_sprite.play("sword_slash" + str(current_combo_counter));
 
-				if (anim == "fireball_1"):
-					# creates a new fireball
-					fireball_instance = fireball_scene.instantiate();
-					fireball_instance.position = position;
+				if (current_combo_counter == 2):
+					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false)
+					$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
 
-					# plays the second animation part 
-					get_parent().get_node("Fireball").add_child(fireball_instance);
-					animated_sprite.play("fireball_2");
+				elif (current_combo_counter == 3):
+					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
+					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
 				
-				# queues next colbo
-				elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
-					queue_next_combo = false;
-					current_combo_counter += 1;
-					animated_sprite.play("sword_slash" + str(current_combo_counter));
-					
-				else:
-					can_input = true;
-					current_combo_counter = 0;
-					queue_next_combo = false;
+			else:
+				can_input = true;
+				current_combo_counter = 0;
+				queue_next_combo = false;
 				
+				disable_all_hitboxes();
 				
-			# logic checks whether the animation is sword_slash1 or sword_slash2
-			# and attack key pressed before the timer exceeds the cooldown
-			# and the combo counter is lesser than max value
-			elif ((anim == "sword_slash1" or anim == "sword_slash2") and
-				Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
-			):
-				queue_next_combo = true;
+		# logic checks whether the animation is sword_slash1 or sword_slash2
+		# and attack key pressed before the timer exceeds the cooldown
+		# and the combo counter is lesser than max value
+		elif ((anim == "sword_slash1" or anim == "sword_slash2") and
+			Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
+		):
+			queue_next_combo = true;
 		
 	
 	# camera look down functionality only for debugging right now

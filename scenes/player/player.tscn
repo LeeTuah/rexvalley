@@ -466,28 +466,41 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(0, -200)]
 }
 
-[sub_resource type="Animation" id="Animation_8ydkj"]
-resource_name = "screen_shake"
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
 _data = {
 &"RESET": SubResource("Animation_dovo2"),
 &"camera_moving_down": SubResource("Animation_gmlin"),
-&"camera_moving_up": SubResource("Animation_lvxji"),
-&"screen_shake": SubResource("Animation_8ydkj")
+&"camera_moving_up": SubResource("Animation_lvxji")
 }
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nrgbc"]
+radius = 75.0
+height = 152.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_01hqx"]
+radius = 53.000004
+height = 136.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7lgu"]
+radius = 36.0
+height = 230.0
 
 [node name="player" type="CharacterBody2D" unique_id=1387465769]
 script = ExtResource("1_dovo2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1730063195]
 texture_filter = 1
+position = Vector2(2, 0)
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
 animation = &"shield"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=609036338]
-polygon = PackedVector2Array(4, 58, -44, 58, -67, 17, -67, -17, -9, -54, 31, -54, 68, -45, 68, -28, 50, 11)
+[node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
+visible = false
+position = Vector2(4, 7)
+polygon = PackedVector2Array(4, 58, -44, 58, -70, 15, -70, -17, -14, -56, 28, -56, 40, -47, 38, -31, 28, 5, 19, 18)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
 position = Vector2(0, -200)
@@ -495,5 +508,30 @@ position = Vector2(0, -200)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=357818277]
 root_node = NodePath("../Camera2D")
 libraries/ = SubResource("AnimationLibrary_lvxji")
+
+[node name="sword_hitbox" type="Area2D" parent="." unique_id=2075840398]
+visible = false
+
+[node name="sword_slash1_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1384534355]
+position = Vector2(94, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_nrgbc")
+disabled = true
+
+[node name="sword_slash2_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=110929224]
+position = Vector2(66, -2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_01hqx")
+disabled = true
+
+[node name="sword_slash3_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1218612930]
+shape = SubResource("CapsuleShape2D_p3lo5")
+disabled = true
+
+[node name="sword_thrust_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1896183574]
+position = Vector2(112, 3)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_g7lgu")
+disabled = true
 
 [connection signal="sprite_frames_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_sprite_frames_changed"]
