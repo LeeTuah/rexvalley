@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://t2nku31mpv8o"
-path="res://.godot/imported/stamina_bar.png-8c0eea43380cd986929d0acc26730c64.ctex"
+uid="uid://dq4675n8fp5ag"
+path="res://.godot/imported/player_spritesheet_fireball.png-29cd54e98a88dcaf7cecdf0f9655b3e7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/stamina_bar.png"
-dest_files=["res://.godot/imported/stamina_bar.png-8c0eea43380cd986929d0acc26730c64.ctex"]
+source_file="res://assets/player/player_spritesheet_fireball.png"
+dest_files=["res://.godot/imported/player_spritesheet_fireball.png-29cd54e98a88dcaf7cecdf0f9655b3e7.ctex"]
 
 [params]
 

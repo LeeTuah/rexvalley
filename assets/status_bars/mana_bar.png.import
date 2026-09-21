@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1yk6qvu5p034"
-path="res://.godot/imported/player_sword_slash1.png-30495ad498a1b9b7abcfd277e568b80e.ctex"
+uid="uid://b4hk5wwyw3t75"
+path="res://.godot/imported/mana_bar.png-ad885cfd4203164e443b8e9d140a4a5e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/player_sword_slash1.png"
-dest_files=["res://.godot/imported/player_sword_slash1.png-30495ad498a1b9b7abcfd277e568b80e.ctex"]
+source_file="res://assets/status_bars/mana_bar.png"
+dest_files=["res://.godot/imported/mana_bar.png-ad885cfd4203164e443b8e9d140a4a5e.ctex"]
 
 [params]
 

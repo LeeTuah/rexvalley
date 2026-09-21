@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5t4r6kwkvr5o"
-path="res://.godot/imported/health_bar_empty.png-7020231b507170d8fd8e67431044ad2a.ctex"
+uid="uid://bcbjkqylmron8"
+path="res://.godot/imported/background.png-7d3929602d3212c83810a659cba345d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/health_bar_empty.png"
-dest_files=["res://.godot/imported/health_bar_empty.png-7020231b507170d8fd8e67431044ad2a.ctex"]
+source_file="res://assets/backgrounds/background_summer/background.png"
+dest_files=["res://.godot/imported/background.png-7d3929602d3212c83810a659cba345d6.ctex"]
 
 [params]
 

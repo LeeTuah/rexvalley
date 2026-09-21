@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ch5kqc4mtaakt"]
 
 [ext_resource type="Script" uid="uid://cci4iw4rj4kji" path="res://scenes/player_stats/stamina_bar.gd" id="1_56leh"]
-[ext_resource type="Texture2D" uid="uid://t2nku31mpv8o" path="res://assets/stamina_bar.png" id="1_axt0b"]
-[ext_resource type="Texture2D" uid="uid://pfhkyv2dy25d" path="res://assets/stamina_bar_empty.png" id="1_mfb2f"]
+[ext_resource type="Texture2D" uid="uid://t2nku31mpv8o" path="res://assets/status_bars/stamina_bar.png" id="1_axt0b"]
+[ext_resource type="Texture2D" uid="uid://pfhkyv2dy25d" path="res://assets/status_bars/stamina_bar_empty.png" id="1_mfb2f"]
 
 [node name="TextureProgressBar" type="TextureProgressBar" unique_id=904279260]
 texture_filter = 1

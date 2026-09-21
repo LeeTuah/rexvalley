@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pfhkyv2dy25d"
-path="res://.godot/imported/stamina_bar_empty.png-e7aba98717507a41bd32053a29850fae.ctex"
+uid="uid://defu3fncb1t6t"
+path="res://.godot/imported/layer1.png-0f5acfabce783ab563ba882b941e0308.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/stamina_bar_empty.png"
-dest_files=["res://.godot/imported/stamina_bar_empty.png-e7aba98717507a41bd32053a29850fae.ctex"]
+source_file="res://assets/backgrounds/background_summer/layer1.png"
+dest_files=["res://.godot/imported/layer1.png-0f5acfabce783ab563ba882b941e0308.ctex"]
 
 [params]
 
