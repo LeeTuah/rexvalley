@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D;
+@onready var animation_player = $AnimationPlayer;
 
 var fireball_scene = preload("res://scenes/Magic/fire_ball.tscn");
 
@@ -172,11 +173,12 @@ func _process(delta: float):
 	
 	else:
 			idle_time += delta;
-			#var current_animation = animated_sprite.animation;
-			if idle_time >= IDLE_TIMES[animated_sprite.animation]: # checking counter wait time from dictionary above
+			
+			var anim = animated_sprite.animation;
+			if idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 				idle_time = 0.0; 
 
-				if (animated_sprite.animation == "fireball_1"):
+				if (anim == "fireball_1"):
 					# creates a new fireball
 					fireball_instance = fireball_scene.instantiate();
 					fireball_instance.position = position;
@@ -184,8 +186,9 @@ func _process(delta: float):
 					# plays the second animation part 
 					get_parent().get_node("Fireball").add_child(fireball_instance);
 					animated_sprite.play("fireball_2");
-					
-				elif (((animated_sprite.animation == "sword_slash1" or animated_sprite.animation == "sword_slash2") and queue_next_combo)):
+				
+				# queues next colbo
+				elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
 					queue_next_combo = false;
 					current_combo_counter += 1;
 					animated_sprite.play("sword_slash" + str(current_combo_counter));
@@ -196,10 +199,10 @@ func _process(delta: float):
 					queue_next_combo = false;
 				
 				
-			#logic checks whether the animation is sword_slash1 or sword_slash2
-			#and attack key pressed before the timer exceeds the cooldown
-			#and the combo counter is lesser than max value
-			elif ((animated_sprite.animation == "sword_slash1" or animated_sprite.animation == "sword_slash2") and
+			# logic checks whether the animation is sword_slash1 or sword_slash2
+			# and attack key pressed before the timer exceeds the cooldown
+			# and the combo counter is lesser than max value
+			elif ((anim == "sword_slash1" or anim == "sword_slash2") and
 				Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
 			):
 				queue_next_combo = true;
@@ -208,9 +211,9 @@ func _process(delta: float):
 	# camera look down functionality only for debugging right now
 	if (Input.is_action_just_pressed("ui_look_down")):
 		if ($Camera2D.position.y == CAMERA_DEFAULT_POS):
-			$AnimationPlayer.play("camera_moving_down");
+			animation_player.play("camera_moving_down");
 
 		else:
-			$AnimationPlayer.play("camera_moving_up");
+			animation_player.play("camera_moving_up");
 
 	global.player_position = position;

@@ -60,7 +60,3 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	generate_new_terrain();
-	
-	$background_summer.position.x = get_node("player").position.x;
-	$background_summer.position.y = (get_node("player").position.y)*0.3 + 270;
-	

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://br6t7gtsfl3th"]
 
 [ext_resource type="Script" uid="uid://dldp2lk2cgp8m" path="res://scenes/Magic/fire_ball.gd" id="1_bldap"]
-[ext_resource type="Texture2D" uid="uid://cudsfcqyh8hqc" path="res://assets/fireball.png" id="1_xy6ur"]
+[ext_resource type="Texture2D" uid="uid://cudsfcqyh8hqc" path="res://assets/projectiles/fireball.png" id="1_xy6ur"]
 
 [node name="FireBall" type="Area2D" unique_id=1528362529]
 script = ExtResource("1_bldap")

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-![Screenshot](assets/Screenshot.png)
+![Screenshot](assets/README/fScreenshot.png)
 
 **Rex Valley** is a Single-Player, small **action-adventure** game featuring the **Google Dino** as its lead protagonist! Explore this 2D world, featuring beautiful **pixel-art**, unique **bosses** and a simple yet effective, combat system. 
 

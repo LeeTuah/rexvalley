@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://bctd65a0ob5g3"]
 
 [ext_resource type="Script" uid="uid://cfleorhu77pdc" path="res://scenes/player/player.gd" id="1_dovo2"]
-[ext_resource type="Texture2D" uid="uid://cquj8u7riakrn" path="res://assets/player_spritesheet_idle.png" id="2_dovo2"]
-[ext_resource type="Texture2D" uid="uid://dq4675n8fp5ag" path="res://assets/player_spritesheet_fireball.png" id="3_5gtgg"]
-[ext_resource type="Texture2D" uid="uid://c5gnxg5emrcog" path="res://assets/player_spritesheet_walk.png" id="3_gmlin"]
-[ext_resource type="Texture2D" uid="uid://b1yk6qvu5p034" path="res://assets/player_sword_slash1.png" id="4_lvxji"]
-[ext_resource type="Texture2D" uid="uid://beia8anoec13j" path="res://assets/player_sword_slash2.png" id="5_p47bc"]
-[ext_resource type="Texture2D" uid="uid://dgct4lwijq6rx" path="res://assets/player_spritesheet_shield.png" id="5_qek5x"]
-[ext_resource type="Texture2D" uid="uid://r14mtuip3qcv" path="res://assets/player_spritesheet_thrust.png" id="6_75vfm"]
+[ext_resource type="Texture2D" uid="uid://cquj8u7riakrn" path="res://assets/player/player_spritesheet_idle.png" id="2_dovo2"]
+[ext_resource type="Texture2D" uid="uid://dq4675n8fp5ag" path="res://assets/player/player_spritesheet_fireball.png" id="3_5gtgg"]
+[ext_resource type="Texture2D" uid="uid://c5gnxg5emrcog" path="res://assets/player/player_spritesheet_walk.png" id="3_gmlin"]
+[ext_resource type="Texture2D" uid="uid://b1yk6qvu5p034" path="res://assets/player/player_sword_slash1.png" id="4_lvxji"]
+[ext_resource type="Texture2D" uid="uid://beia8anoec13j" path="res://assets/player/player_sword_slash2.png" id="5_p47bc"]
+[ext_resource type="Texture2D" uid="uid://dgct4lwijq6rx" path="res://assets/player/player_spritesheet_shield.png" id="5_qek5x"]
+[ext_resource type="Texture2D" uid="uid://r14mtuip3qcv" path="res://assets/player/player_spritesheet_thrust.png" id="6_75vfm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5q8fn"]
 atlas = ExtResource("3_5gtgg")

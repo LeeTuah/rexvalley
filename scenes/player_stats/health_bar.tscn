@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bm8s4h5i3c4oe"]
 
 [ext_resource type="Script" uid="uid://epk2t86syivn" path="res://scenes/player_stats/health_bar.gd" id="1_3jo6m"]
-[ext_resource type="Texture2D" uid="uid://5t4r6kwkvr5o" path="res://assets/health_bar_empty.png" id="1_wynrw"]
-[ext_resource type="Texture2D" uid="uid://b2rvqgf013fwc" path="res://assets/health_bar.png" id="2_wynrw"]
+[ext_resource type="Texture2D" uid="uid://5t4r6kwkvr5o" path="res://assets/status_bars/health_bar_empty.png" id="1_wynrw"]
+[ext_resource type="Texture2D" uid="uid://b2rvqgf013fwc" path="res://assets/status_bars/health_bar.png" id="2_wynrw"]
 
 [node name="health_bar" type="TextureProgressBar" unique_id=637997677]
 texture_filter = 1
