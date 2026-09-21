@@ -509,7 +509,6 @@ root_node = NodePath("../Camera2D")
 libraries/ = SubResource("AnimationLibrary_lvxji")
 
 [node name="sword_hitbox" type="Area2D" parent="." unique_id=2075840398]
-visible = false
 
 [node name="sword_slash1_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1384534355]
 position = Vector2(94, 0)

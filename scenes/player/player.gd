@@ -238,5 +238,5 @@ func _process(delta: float):
 
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
-		body.take_damage(30, Vector2(direction, 0.0), 500.0, 0.5);
+		body.take_damage(30, Vector2(global.player_direction, -1.5), 250.0, 2.3);
 		
