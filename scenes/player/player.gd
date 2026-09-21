@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 	direction = Input.get_axis("ui_left", "ui_right")
 	if direction != 0:
 		global.player_direction = direction;
-	if (direction != 0): thrust_direction = direction;
+		thrust_direction = direction; 
 
 	# thrust physics calc
 	if (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
@@ -235,3 +235,8 @@ func _process(delta: float):
 			animation_player.play("camera_moving_up");
 
 	global.player_position = position;
+
+func _on_sword_hitbox_body_entered(body: Node2D) -> void:
+	if (body.has_method("take_damage")):
+		body.take_damage(30, Vector2(direction, 0.0), 500.0, 0.5);
+		

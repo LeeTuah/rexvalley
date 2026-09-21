@@ -498,9 +498,8 @@ sprite_frames = SubResource("SpriteFrames_01hqx")
 animation = &"shield"
 
 [node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
-visible = false
-position = Vector2(4, 7)
-polygon = PackedVector2Array(4, 58, -44, 58, -70, 15, -70, -17, -14, -56, 28, -56, 40, -47, 38, -31, 28, 5, 19, 18)
+position = Vector2(1, 0)
+polygon = PackedVector2Array(4, 58, -44, 58, -70, 15, -70, -17, -8, -50, 32, -50, 41, -40, 41, -19, 32, 8, 21, 21)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
 position = Vector2(0, -200)
@@ -535,3 +534,5 @@ shape = SubResource("CapsuleShape2D_g7lgu")
 disabled = true
 
 [connection signal="sprite_frames_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_sprite_frames_changed"]
+[connection signal="area_entered" from="sword_hitbox" to="." method="_on_sword_hitbox_area_entered"]
+[connection signal="body_entered" from="sword_hitbox" to="." method="_on_sword_hitbox_body_entered"]

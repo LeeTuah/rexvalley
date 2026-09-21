@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://cuvau7h1fv6"]
+
+[ext_resource type="Script" uid="uid://cijw3da0a35k" path="res://scenes/zombie/zombie.gd" id="1_ncyl7"]
+[ext_resource type="Texture2D" uid="uid://bceiidb1t21ie" path="res://assets/enemies/zombie_idle_spritesheet.png" id="1_nlave"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ncyl7"]
+atlas = ExtResource("1_nlave")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mvc3"]
+atlas = ExtResource("1_nlave")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nrgbc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ncyl7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6mvc3")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
+size = Vector2(135, 117)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
+
+[node name="zombie" type="CharacterBody2D" unique_id=1675127161]
+script = ExtResource("1_ncyl7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=770829384]
+scale = Vector2(4.5, 4.5)
+sprite_frames = SubResource("SpriteFrames_nrgbc")
+animation = &"idle"
+frame_progress = 0.30923992
+
+[node name="zombie_hitbox" type="CollisionShape2D" parent="." unique_id=806944028]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_nrgbc")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1731992048]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=548299028]
+shape = SubResource("CapsuleShape2D_p3lo5")
+disabled = true
