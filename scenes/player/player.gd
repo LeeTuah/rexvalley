@@ -104,8 +104,11 @@ func _process(delta: float):
 	
 	# flipping animated sprite
 	if velocity.x != 0:
+		var velocity_condition = -1 if velocity.x < 0 else 1;
+
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
-		$sword_hitbox.scale.x = -1 if velocity.x < 0 else 1;
+		$sword_hitbox.scale.x = velocity_condition;
+		$player_collision_box.scale.x = velocity_condition;
 
 	# sprint cooldown
 	if not can_run:
@@ -238,5 +241,5 @@ func _process(delta: float):
 
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
-		body.take_damage(30, Vector2(global.player_direction, -1.5), 250.0, 2.3);
-		
+		# body.take_damage(5, Vector2(global.player_direction, -1.5), 250.0, 2.3);
+		body.take_damage(20, Vector2(global.player_direction, 0.0), 250.0, 2.3);

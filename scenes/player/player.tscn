@@ -511,8 +511,9 @@ libraries/ = SubResource("AnimationLibrary_lvxji")
 [node name="sword_hitbox" type="Area2D" parent="." unique_id=2075840398]
 
 [node name="sword_slash1_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1384534355]
-position = Vector2(94, 0)
+position = Vector2(52, 0)
 rotation = 1.5707964
+scale = Vector2(1, 0.67999876)
 shape = SubResource("CapsuleShape2D_nrgbc")
 disabled = true
 
@@ -527,8 +528,9 @@ shape = SubResource("CapsuleShape2D_p3lo5")
 disabled = true
 
 [node name="sword_thrust_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1896183574]
-position = Vector2(112, 3)
+position = Vector2(92, 0)
 rotation = 1.5707964
+scale = Vector2(1, 0.8000012)
 shape = SubResource("CapsuleShape2D_g7lgu")
 disabled = true
 

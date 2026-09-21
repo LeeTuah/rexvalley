@@ -2,50 +2,54 @@ extends CharacterBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D;
 
-const SPEED = 300.0
+const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
-var health_point = 100000000000;
+const MAX_HEALTH = 100.0;
+const ZOMBIE_DAMAGE = 5.0;
+var health_point = MAX_HEALTH;
 
-var knockback_force = Vector2(0.0, 0.0);
 var knockback_countdown = 0.0;
 
-func take_damage(damage: float, direction: Vector2, knockback: float, knockback_cooldown: float):
-	print("cholche")
-	health_point -= damage;
-	health_point = clamp(health_point, 0.0, 100000000000.0);
+var player_to_zombie_dirn = 0;
 
-	if (health_point == 0.0):
+const ZOMBIE_HITBOX_OFFSET = [13.0, 70.0];
+
+func take_damage(damage: float, direction: Vector2, knockback: float, knockback_cooldown: float):
+	health_point -= damage;
+	health_point = clamp(health_point, 0.0, MAX_HEALTH);
+	if (health_point <= 0.0):
 		queue_free();
 
-	knockback_force = knockback * direction;
+	velocity = knockback * direction;
 	knockback_countdown = knockback_cooldown;
-	velocity = knockback_force
 
 func _ready() -> void:
 	animated_sprite.play("idle");
-	scale.x = -1;
 
 func _physics_process(delta: float) -> void:
+	player_to_zombie_dirn = sign((global.player_position.x - position.x));
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	if (knockback_countdown > 0.0):
 		knockback_countdown -= delta;
-		
+		velocity.x = move_toward(velocity.x, 0, 200 * delta);
 
-		velocity.x -= 200 * delta
-		if velocity.x <= 0.0:
-			velocity.x = 0.0
+	else:
+		velocity.x = player_to_zombie_dirn * SPEED;
 
 	move_and_slide()
 
-# func _process(delta: float) -> void:
-# 	if (knockback_countdown >= 0.0):
-# 		knockback_countdown -= delta;
-# 		velocity = knockback_force;
+func _process(_delta: float) -> void:
+	player_to_zombie_dirn = sign((global.player_position.x - position.x));
 
-# 	else:
-# 		knockback_force = Vector2(0.0, 0.0);
+	$AnimatedSprite2D.flip_h = player_to_zombie_dirn < 0;
+	$zombie_hitbox.position.x = ZOMBIE_HITBOX_OFFSET[0] if player_to_zombie_dirn < 0 else -ZOMBIE_HITBOX_OFFSET[0];
+	$zombie_sword_hitbox.position.x = -ZOMBIE_HITBOX_OFFSET[1] if player_to_zombie_dirn < 0 else ZOMBIE_HITBOX_OFFSET[1];
 
-# 	move_and_slide();
+
+func _on_zombie_sword_hitbox_body_entered(body: Node2D) -> void:
+	if (body.name == "player"):
+		global.current_health -= ZOMBIE_DAMAGE;

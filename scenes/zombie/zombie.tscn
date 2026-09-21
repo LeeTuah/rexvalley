@@ -26,7 +26,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
-size = Vector2(135, 117)
+size = Vector2(108, 108)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
 
@@ -40,11 +40,16 @@ animation = &"idle"
 frame_progress = 0.30923992
 
 [node name="zombie_hitbox" type="CollisionShape2D" parent="." unique_id=806944028]
-position = Vector2(0.5, -0.5)
+position = Vector2(-13, 4)
 shape = SubResource("RectangleShape2D_nrgbc")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1731992048]
+[node name="zombie_sword_hitbox" type="Area2D" parent="." unique_id=1731992048]
+position = Vector2(70, 3.999998)
+rotation = 1.5707964
+scale = Vector2(3.1340942, -2.6924891)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=548299028]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_sword_hitbox" unique_id=548299028]
+position = Vector2(6.0858054e-07, 3.143195e-14)
 shape = SubResource("CapsuleShape2D_p3lo5")
-disabled = true
+
+[connection signal="body_entered" from="zombie_sword_hitbox" to="." method="_on_zombie_sword_hitbox_body_entered"]
