@@ -9,4 +9,3 @@ func _ready() -> void:
 
 func change_player_mana(curr_mana):
 	value = curr_mana
-	print(value)

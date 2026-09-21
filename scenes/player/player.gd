@@ -17,7 +17,7 @@ var IDLE_TIMES = {
 	"thrust": 		0.5,
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
-	"shield": 1.67
+	"shield": 		1.67
 }
 var MAGIC_ANIMATIONS = ["fireball_1","fireball_2","shield"];
 
@@ -126,6 +126,7 @@ func _process(delta: float):
 				global.current_mana -= 14;
 				magic_done = true;
 			
+			# magic shield
 			elif (Input.is_action_just_pressed("magic_shield") and (global.current_mana > 20)):
 				animated_sprite.play("shield");
 				can_input = false;
@@ -174,7 +175,6 @@ func _process(delta: float):
 			#var current_animation = animated_sprite.animation;
 			if idle_time >= IDLE_TIMES[animated_sprite.animation]: # checking counter wait time from dictionary above
 				idle_time = 0.0; 
-				
 
 				if (animated_sprite.animation == "fireball_1"):
 					# creates a new fireball
@@ -188,7 +188,7 @@ func _process(delta: float):
 				elif (((animated_sprite.animation == "sword_slash1" or animated_sprite.animation == "sword_slash2") and queue_next_combo)):
 					queue_next_combo = false;
 					current_combo_counter += 1;
-					animated_sprite.play("sword_slash"+str(current_combo_counter));
+					animated_sprite.play("sword_slash" + str(current_combo_counter));
 					
 				else:
 					can_input = true;
@@ -203,11 +203,6 @@ func _process(delta: float):
 				Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
 			):
 				queue_next_combo = true;
-				#idle_time = 0.0;
-				#can_input = false;
-				#
-				#current_combo_counter += 1;
-				#animated_sprite.play("sword_slash" + str(current_combo_counter));
 		
 	
 	# camera look down functionality only for debugging right now

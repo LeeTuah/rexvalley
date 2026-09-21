@@ -10,15 +10,17 @@ This **art** and the **game** itself have been made with passion by three amateu
 
 ## Running the project
 
-The project is OS Independent and can run seamlessly on any system.
+### Pre-built executables
 
-1. Install [Godot 4.7.2+](https://godotengine.org/)
+1. Download the latest build from the releases section of this repo.
 
-2. Clone this repository:
+### Build from Source
+
+1. Install [Godot 4.7.2+](https://godotengine.org/) and clone the repo
 ```
     git clone https://github.com/LeeTuah/rexvalley.git
 ```
 
-3. Inside Godot click **Import** and select the **project.godot** file inside the cloned folder.
+2. Inside Godot click **Import** and select the **project.godot** file inside the cloned folder.
 
-4. Run the project and have fun!
+3. Run the project and select game_manager.tscn as the main scene if asked.
