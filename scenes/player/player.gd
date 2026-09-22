@@ -23,6 +23,14 @@ var IDLE_TIMES = {
 };
 var MAGIC_ANIMATIONS = ["fireball_1","fireball_2","shield"];
 
+var DAMAGE_OUTPUTS = {
+	# attack name: [damage, knockback, knockback cooldown, knockback y direction]
+	"sword_slash1": [10.0, 250.0, 2.3, -1.2],
+	"sword_slash2": [13.0, 250.0, 2.3, -1.2],
+	"sword_slash3": [16.0, 250.0, 2.3, -1.2],
+	"thrust": 		[25.0, 650.0, 2.0,  0.0],
+};
+
 var can_run = true;
 var sprint_timer = 0.0;
 const SPRINT_COOLDOWN = 3.0
@@ -253,5 +261,8 @@ func _process(delta: float):
 
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
-		# body.take_damage(5, Vector2(global.player_direction, -1.5), 250.0, 2.3);
-		body.take_damage(20, Vector2(global.player_direction, -1.2), 250.0, 2.3);
+		var anim = animated_sprite.animation;
+		body.take_damage(
+			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
+			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
+		);

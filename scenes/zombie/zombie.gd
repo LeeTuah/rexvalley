@@ -6,11 +6,12 @@ extends CharacterBody2D
 @onready var zombie_sword_hitbox = $zombie_sword_hitbox
 @onready var sword_slash1_hitbox = $zombie_sword_hitbox/sword_slash1_hitbox
 @onready var death_blud = $death_blud
+@onready var damage_blood = $damage_blood;
 
 const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
-const MAX_HEALTH = 1002343445345345345.0;
+const MAX_HEALTH = 100.0;
 const ZOMBIE_DAMAGE = 5.0;
 var health_point = MAX_HEALTH;
 
@@ -31,6 +32,7 @@ var ATTACK_COOLDOWNS = {
 }
 
 var death_timer = 0.0
+var damage_timer = 0.0;
 
 func take_damage(damage: float, direction: Vector2, knockback: float, knockback_cooldown: float):
 	health_point -= damage;
@@ -40,7 +42,11 @@ func take_damage(damage: float, direction: Vector2, knockback: float, knockback_
 		animated_sprite.visible = false
 		zombie_dead = true;
 
-		death_timer.start()
+		death_timer.start();
+
+	else:
+		damage_blood.emitting = true;
+		damage_timer.start();
 
 	velocity = knockback * direction;
 	knockback_countdown = knockback_cooldown;
@@ -51,11 +57,20 @@ func _ready() -> void:
 	animated_sprite.play("idle");
 	sword_slash1_hitbox.set_deferred("disabled", true)
 	death_blud.emitting = false
+	damage_blood.emitting = false;
 
 	death_timer = Timer.new()
 	add_child(death_timer)
 	death_timer.wait_time = 1.5
 	death_timer.connect("timeout", queue_free)
+
+	damage_timer = Timer.new();
+	add_child(damage_timer);
+	damage_timer.wait_time = 0.5
+	damage_timer.connect("timeout", func():
+		damage_blood.emitting = false;
+	);
+	damage_timer.one_shot = true;
 
 func _physics_process(delta: float) -> void:
 	player_to_zombie_dirn = sign((global.player_position.x - position.x));

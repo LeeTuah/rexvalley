@@ -10,6 +10,7 @@
 z_index = -4096
 
 [node name="layer1" type="Parallax2D" parent="." unique_id=897157584]
+modulate = Color(0.85882354, 0.85882354, 0.85882354, 1)
 scroll_scale = Vector2(0, 0)
 repeat_size = Vector2(1600, 0)
 
@@ -20,6 +21,7 @@ texture = ExtResource("1_rmn2p")
 centered = false
 
 [node name="layer2" type="Parallax2D" parent="." unique_id=260792057]
+modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.1, 0.1)
 repeat_size = Vector2(1600, 0)
 
@@ -30,6 +32,7 @@ texture = ExtResource("2_7s5i1")
 centered = false
 
 [node name="layer3" type="Parallax2D" parent="." unique_id=1688952488]
+modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.3, 0.3)
 repeat_size = Vector2(1600, 0)
 
@@ -40,6 +43,7 @@ texture = ExtResource("3_a41op")
 centered = false
 
 [node name="layer4" type="Parallax2D" parent="." unique_id=1928211234]
+modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.4, 0.4)
 repeat_size = Vector2(1600, 0)
 
@@ -50,6 +54,7 @@ texture = ExtResource("4_l02p2")
 centered = false
 
 [node name="layer5" type="Parallax2D" parent="." unique_id=1242479161]
+modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(1600, 0)
 

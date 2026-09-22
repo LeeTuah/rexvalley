@@ -143,8 +143,8 @@ spread = 180.0
 initial_velocity_min = 50.0
 initial_velocity_max = 150.0
 gravity = Vector3(0, 100, 0)
-scale_min = 1.5
-scale_max = 3.3
+scale_min = 2.5
+scale_max = 4.0
 color_ramp = SubResource("GradientTexture1D_r1l86")
 
 [node name="zombie" type="CharacterBody2D" unique_id=1675127161]
@@ -180,6 +180,12 @@ shape = SubResource("CapsuleShape2D_ob1uy")
 
 [node name="death_blud" type="GPUParticles2D" parent="." unique_id=2034976372]
 position = Vector2(-18, 56)
+emitting = false
+amount = 50
+explosiveness = 0.15
+process_material = SubResource("ParticleProcessMaterial_d2kyw")
+
+[node name="damage_blood" type="GPUParticles2D" parent="." unique_id=289362226]
 emitting = false
 amount = 50
 explosiveness = 0.15
