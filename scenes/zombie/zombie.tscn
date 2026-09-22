@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cijw3da0a35k" path="res://scenes/zombie/zombie.gd" id="1_ncyl7"]
 [ext_resource type="Texture2D" uid="uid://bceiidb1t21ie" path="res://assets/enemies/zombie_idle_spritesheet.png" id="1_nlave"]
+[ext_resource type="Texture2D" uid="uid://c6bedrtfpjruv" path="res://assets/enemies/zombie-slash1.png" id="3_r1l86"]
+[ext_resource type="Texture2D" uid="uid://csskpbj4qduao" path="res://assets/enemies/zombie-walk.png" id="4_rovuw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ncyl7"]
 atlas = ExtResource("1_nlave")
@@ -10,6 +12,50 @@ region = Rect2(0, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6mvc3"]
 atlas = ExtResource("1_nlave")
 region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2kyw"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eykj"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lamel"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x18kf"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltkux"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aymqy"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4k7nl"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hy5tm"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5kb4"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vwmx8"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxjsn"]
+atlas = ExtResource("4_rovuw")
+region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nrgbc"]
 animations = [{
@@ -23,12 +69,85 @@ animations = [{
 "loop": 1,
 "name": &"idle",
 "speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2kyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1eykj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lamel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x18kf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltkux")
+}],
+"loop": 0,
+"name": &"sword_slash1",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aymqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4k7nl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hy5tm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5kb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vwmx8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxjsn")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
 size = Vector2(108, 108)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
+radius = 16.341755
+height = 32.68351
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ob1uy"]
+radius = 16.341755
+height = 32.68351
+
+[sub_resource type="Gradient" id="Gradient_r1l86"]
+offsets = PackedFloat32Array(0, 0, 1)
+colors = PackedColorArray(0.72156864, 0.15686275, 0.15686275, 1, 0.43137255, 0.09411765, 0.09411765, 1, 0.1764706, 0.039215688, 0.039215688, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1eykj"]
+gradient = SubResource("Gradient_r1l86")
+width = 7
+height = 8
+fill_to = Vector2(1, 1)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d2kyw"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angle_min = 1.0728835e-05
+angle_max = 90.000015
+direction = Vector3(1, 1, 0)
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 100, 0)
+scale_min = 0.5
 
 [node name="zombie" type="CharacterBody2D" unique_id=1675127161]
 script = ExtResource("1_ncyl7")
@@ -36,8 +155,9 @@ script = ExtResource("1_ncyl7")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=770829384]
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_nrgbc")
-animation = &"idle"
-frame_progress = 0.30923992
+animation = &"sword_slash1"
+frame = 4
+frame_progress = 1.0
 
 [node name="zombie_hitbox" type="CollisionShape2D" parent="." unique_id=806944028]
 position = Vector2(-13, 4)
@@ -48,8 +168,26 @@ position = Vector2(70, 3.999998)
 rotation = 1.5707964
 scale = Vector2(3.1340942, -2.6924891)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="zombie_sword_hitbox" unique_id=548299028]
-position = Vector2(6.0858054e-07, 3.143195e-14)
+[node name="sword_slash1_hitbox" type="CollisionShape2D" parent="zombie_sword_hitbox" unique_id=548299028]
+position = Vector2(-0.63814235, 0.7428069)
 shape = SubResource("CapsuleShape2D_p3lo5")
 
+[node name="attack_area_hitbox" type="Area2D" parent="." unique_id=1634643001]
+
+[node name="attack_range" type="CollisionShape2D" parent="attack_area_hitbox" unique_id=1544503736]
+position = Vector2(72, 2)
+rotation = 1.5707964
+scale = Vector2(3.1340942, -2.6924891)
+shape = SubResource("CapsuleShape2D_ob1uy")
+
+[node name="death_blud" type="GPUParticles2D" parent="." unique_id=2034976372]
+position = Vector2(0, 55)
+amount = 50
+texture = SubResource("GradientTexture2D_1eykj")
+explosiveness = 0.15
+process_material = SubResource("ParticleProcessMaterial_d2kyw")
+
 [connection signal="body_entered" from="zombie_sword_hitbox" to="." method="_on_zombie_sword_hitbox_body_entered"]
+[connection signal="body_exited" from="zombie_sword_hitbox" to="." method="_on_zombie_sword_hitbox_body_exited"]
+[connection signal="body_entered" from="attack_area_hitbox" to="." method="_on_attack_area_hitbox_body_entered"]
+[connection signal="body_exited" from="attack_area_hitbox" to="." method="_on_attack_area_hitbox_body_exited"]

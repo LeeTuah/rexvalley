@@ -50,6 +50,3 @@ script = ExtResource("8_dq8jp")
 
 [node name="zombie" parent="." unique_id=1675127161 instance=ExtResource("9_gth8u")]
 position = Vector2(512, 656)
-
-[node name="zombie2" parent="." unique_id=95634133 instance=ExtResource("9_gth8u")]
-position = Vector2(1272, 656)
