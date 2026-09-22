@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D;
 @onready var attack_area = $attack_area_hitbox
+@onready var attack_area_hitbox = $attack_area_hitbox/attack_range
 @onready var zombie_sword_hitbox = $zombie_sword_hitbox
 @onready var sword_slash1_hitbox = $zombie_sword_hitbox/sword_slash1_hitbox
 @onready var death_blud = $death_blud
@@ -9,18 +10,20 @@ extends CharacterBody2D
 const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
-const MAX_HEALTH = 100.0;
+const MAX_HEALTH = 1002343445345345345.0;
 const ZOMBIE_DAMAGE = 5.0;
 var health_point = MAX_HEALTH;
 
 var knockback_countdown = 0.0;
 var player_to_zombie_dirn = 0;
+var knockback_step = 0.0;
 
 const ZOMBIE_HITBOX_OFFSET = [13.0, 70.0];
 
 var player_in_range = false
 var is_attacking = false
 var player_vulnerable = false
+var zombie_dead = false;
 
 var attack_time = 0.0
 var ATTACK_COOLDOWNS = {
@@ -35,10 +38,13 @@ func take_damage(damage: float, direction: Vector2, knockback: float, knockback_
 	if (health_point <= 0.0):
 		death_blud.emitting = true
 		animated_sprite.visible = false
+		zombie_dead = true;
+
 		death_timer.start()
 
 	velocity = knockback * direction;
 	knockback_countdown = knockback_cooldown;
+	knockback_step = knockback / knockback_cooldown;
 
 
 func _ready() -> void:
@@ -63,8 +69,7 @@ func _physics_process(delta: float) -> void:
 			is_attacking = false
 			sword_slash1_hitbox.set_deferred("disabled", true)
 
-
-	if player_in_range and not is_attacking:
+	if player_in_range and not is_attacking and not zombie_dead:
 		animated_sprite.play("sword_slash1")
 		is_attacking = true
 		attack_time = ATTACK_COOLDOWNS[animated_sprite.animation]
@@ -75,15 +80,17 @@ func _physics_process(delta: float) -> void:
 	
 	if (knockback_countdown > 0.0):
 		knockback_countdown -= delta;
-		velocity.x = move_toward(velocity.x, 0, 200 * delta);
-		animated_sprite.play("idle")
+		velocity.x = move_toward(velocity.x, 0, knockback_step * delta);
 
-	elif not is_attacking:
+	elif not is_attacking and not zombie_dead:
 		velocity.x = player_to_zombie_dirn * SPEED;
 		animated_sprite.play("walk")
 	
 	else:
 		velocity.x = 0.0
+
+	if (not is_attacking and animated_sprite.animation != "walk" and not zombie_dead):
+		animated_sprite.play("idle");
 
 	move_and_slide()
 	
@@ -94,11 +101,11 @@ func _process(_delta: float) -> void:
 	animated_sprite.flip_h = player_to_zombie_dirn < 0;
 	$zombie_hitbox.position.x = ZOMBIE_HITBOX_OFFSET[0] if player_to_zombie_dirn < 0 else -ZOMBIE_HITBOX_OFFSET[0];
 	zombie_sword_hitbox.position.x = -ZOMBIE_HITBOX_OFFSET[1] if player_to_zombie_dirn < 0 else ZOMBIE_HITBOX_OFFSET[1];
+	attack_area_hitbox.position.x = -ZOMBIE_HITBOX_OFFSET[1] if player_to_zombie_dirn < 0 else ZOMBIE_HITBOX_OFFSET[1];
 
 
 func _on_attack_area_hitbox_body_entered(body: Node2D) -> void:
 	if body.name == "player":
-		print("In range to attack")
 		player_in_range = true
 
 
@@ -111,8 +118,6 @@ func _on_zombie_sword_hitbox_body_entered(body: Node2D) -> void:
 	if body.name == "player":
 		global.current_health -= ZOMBIE_DAMAGE
 		player_vulnerable = true
-
-
 
 func _on_zombie_sword_hitbox_body_exited(body: Node2D) -> void:
 	if body.name == "player":

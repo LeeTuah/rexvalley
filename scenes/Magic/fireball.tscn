@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://br6t7gtsfl3th"]
+
+[ext_resource type="Script" uid="uid://dldp2lk2cgp8m" path="res://scenes/Magic/fireball.gd" id="1_theak"]
+[ext_resource type="Texture2D" uid="uid://cudsfcqyh8hqc" path="res://assets/projectiles/fireball.png" id="2_u1cbe"]
+
+[node name="fireball" type="Area2D" unique_id=1528362529]
+script = ExtResource("1_theak")
+
+[node name="fireball_sprite" type="Sprite2D" parent="." unique_id=89056930]
+scale = Vector2(4, 4)
+texture = ExtResource("2_u1cbe")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=278464938]
+polygon = PackedVector2Array(24, -24, 48, -40, 64, -32, 64, -16, 48, 0)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

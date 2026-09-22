@@ -126,14 +126,10 @@ radius = 16.341755
 height = 32.68351
 
 [sub_resource type="Gradient" id="Gradient_r1l86"]
-offsets = PackedFloat32Array(0, 0, 1)
-colors = PackedColorArray(0.72156864, 0.15686275, 0.15686275, 1, 0.43137255, 0.09411765, 0.09411765, 1, 0.1764706, 0.039215688, 0.039215688, 0)
+colors = PackedColorArray(0.72156864, 0.15686275, 0.15686275, 1, 0.43137255, 0.09411765, 0.09411765, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_1eykj"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r1l86"]
 gradient = SubResource("Gradient_r1l86")
-width = 7
-height = 8
-fill_to = Vector2(1, 1)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d2kyw"]
 lifetime_randomness = 1.0
@@ -147,7 +143,9 @@ spread = 180.0
 initial_velocity_min = 50.0
 initial_velocity_max = 150.0
 gravity = Vector3(0, 100, 0)
-scale_min = 0.5
+scale_min = 1.5
+scale_max = 3.3
+color_ramp = SubResource("GradientTexture1D_r1l86")
 
 [node name="zombie" type="CharacterBody2D" unique_id=1675127161]
 script = ExtResource("1_ncyl7")
@@ -181,9 +179,9 @@ scale = Vector2(3.1340942, -2.6924891)
 shape = SubResource("CapsuleShape2D_ob1uy")
 
 [node name="death_blud" type="GPUParticles2D" parent="." unique_id=2034976372]
-position = Vector2(0, 55)
+position = Vector2(-18, 56)
+emitting = false
 amount = 50
-texture = SubResource("GradientTexture2D_1eykj")
 explosiveness = 0.15
 process_material = SubResource("ParticleProcessMaterial_d2kyw")
 

@@ -2,8 +2,9 @@ extends CharacterBody2D
 
 @onready var animated_sprite = $AnimatedSprite2D;
 @onready var animation_player = $AnimationPlayer;
+@onready var walking_particles = $walking_particles;
 
-var fireball_scene = preload("res://scenes/Magic/fire_ball.tscn");
+var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
 
 const SPEED = 300.0
 const ACCN = 2.5
@@ -91,8 +92,13 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide();
 
+	# if (is_on_floor()):
+	# 	var collision = get_last_slide_collision();
+	# 	print("Collided with : ", collision.get_collider().name);
+
 func _ready() -> void:
 	global.player_position = position;
+	walking_particles.emitting = false;
 	
 var fireball_instance;
 var magic_done = false;
@@ -109,6 +115,7 @@ func _process(delta: float):
 		$AnimatedSprite2D.flip_h = velocity.x < 0;
 		$sword_hitbox.scale.x = velocity_condition;
 		$player_collision_box.scale.x = velocity_condition;
+		walking_particles.position.x = 35.0 if velocity.x < 0 else -35.0;
 
 	# sprint cooldown
 	if not can_run:
@@ -125,6 +132,7 @@ func _process(delta: float):
 			can_input = false;
 			idle_time = 0.0;
 			$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", false);
+			walking_particles.emitting = false;
 
 		# magic attacks
 		elif (Input.is_action_pressed("magic_initiate")):
@@ -155,12 +163,15 @@ func _process(delta: float):
 			idle_time = 0.0;
 			global.current_stamina -= 30;
 			$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", false);
+			walking_particles.emitting = true;
 		
 		# jump attack
 		elif (Input.is_action_just_pressed("ui_accept")):
 			pass # jump animation
 
 		elif ((Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right")) and is_on_floor()):
+			walking_particles.emitting = true;
+
 			# sprinting
 			if ((Input.is_action_pressed("ui_sprint")) and (global.current_stamina > 0) and (can_run)):
 				animated_sprite.play("run");
@@ -180,10 +191,10 @@ func _process(delta: float):
 		elif is_on_floor():
 			animated_sprite.play("idle");
 			global.current_stamina += STAMINA_INCREASE_RATE * delta;
-			
-		
+			walking_particles.emitting = false;
 	
 	else:
+		walking_particles.emitting = false;
 		idle_time += delta;
 		
 		var anim = animated_sprite.animation;
@@ -238,6 +249,7 @@ func _process(delta: float):
 			animation_player.play("camera_moving_up");
 
 	global.player_position = position;
+	walking_particles.emitting = walking_particles.emitting if is_on_floor() else false;
 
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
