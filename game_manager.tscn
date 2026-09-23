@@ -1,26 +1,17 @@
 [gd_scene format=3 uid="uid://d0o1tpfgdj7gh"]
 
-[ext_resource type="PackedScene" uid="uid://bctd65a0ob5g3" path="res://scenes/player/player.tscn" id="1_70yv6"]
 [ext_resource type="Script" uid="uid://h1c73dfxafel" path="res://game_manager.gd" id="1_smx3j"]
-[ext_resource type="PackedScene" uid="uid://bx5vwqdrbhuq7" path="res://scenes/backgrounds/background_summer.tscn" id="2_8jrwq"]
 [ext_resource type="PackedScene" uid="uid://bm8s4h5i3c4oe" path="res://scenes/player_stats/health_bar.tscn" id="3_o2178"]
 [ext_resource type="PackedScene" uid="uid://ch5kqc4mtaakt" path="res://scenes/player_stats/stamina_bar.tscn" id="5_vk86k"]
 [ext_resource type="Texture2D" uid="uid://1dk8ldij4tnx" path="res://assets/status_bars/mana_bar_empty.png" id="6_8jrwq"]
+[ext_resource type="PackedScene" uid="uid://cgb1rkdcipt7h" path="res://scenes/levels/level0.tscn" id="7_eakoi"]
 [ext_resource type="Texture2D" uid="uid://b4hk5wwyw3t75" path="res://assets/status_bars/mana_bar.png" id="7_gth8u"]
 [ext_resource type="Script" uid="uid://djtwd7qq5of13" path="res://scenes/player_stats/mana_bar.gd" id="8_dq8jp"]
-[ext_resource type="PackedScene" uid="uid://cuvau7h1fv6" path="res://scenes/zombie/zombie.tscn" id="9_gth8u"]
 
 [node name="game_manager" type="Node2D" unique_id=757637544]
 script = ExtResource("1_smx3j")
 
-[node name="background_summer" parent="." unique_id=242852295 instance=ExtResource("2_8jrwq")]
-
-[node name="player" parent="." unique_id=1387465769 instance=ExtResource("1_70yv6")]
-position = Vector2(787, 686)
-
-[node name="terrain" type="Node" parent="." unique_id=1150755276]
-
-[node name="Fireball" type="Node" parent="." unique_id=1127337835]
+[node name="level0" parent="." unique_id=75631860 instance=ExtResource("7_eakoi")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1138046388]
 
@@ -47,9 +38,3 @@ texture_under = ExtResource("6_8jrwq")
 texture_progress = ExtResource("7_gth8u")
 texture_progress_offset = Vector2(48, 21.7)
 script = ExtResource("8_dq8jp")
-
-[node name="zombie" parent="." unique_id=1675127161 instance=ExtResource("9_gth8u")]
-position = Vector2(512, 656)
-
-[node name="zombie2" parent="." unique_id=1880134770 instance=ExtResource("9_gth8u")]
-position = Vector2(1217, 648)

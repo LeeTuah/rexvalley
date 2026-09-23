@@ -118,12 +118,12 @@ animations = [{
 size = Vector2(108, 108)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
-radius = 16.341755
-height = 32.68351
+radius = 11.51351
+height = 24.51263
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ob1uy"]
-radius = 16.341755
-height = 32.68351
+radius = 11.142107
+height = 22.284214
 
 [sub_resource type="Gradient" id="Gradient_r1l86"]
 colors = PackedColorArray(0.72156864, 0.15686275, 0.15686275, 1, 0.43137255, 0.09411765, 0.09411765, 1)
@@ -178,7 +178,7 @@ rotation = 1.5707964
 scale = Vector2(3.1340942, -2.6924891)
 shape = SubResource("CapsuleShape2D_ob1uy")
 
-[node name="death_blud" type="GPUParticles2D" parent="." unique_id=2034976372]
+[node name="death_blood" type="GPUParticles2D" parent="." unique_id=2034976372]
 position = Vector2(-18, 56)
 emitting = false
 amount = 50

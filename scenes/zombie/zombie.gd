@@ -5,13 +5,13 @@ extends CharacterBody2D
 @onready var attack_area_hitbox = $attack_area_hitbox/attack_range
 @onready var zombie_sword_hitbox = $zombie_sword_hitbox
 @onready var sword_slash1_hitbox = $zombie_sword_hitbox/sword_slash1_hitbox
-@onready var death_blud = $death_blud
+@onready var death_blood = $death_blood
 @onready var damage_blood = $damage_blood;
 
 const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
-const MAX_HEALTH = 100.0;
+const MAX_HEALTH = 30.0;
 const ZOMBIE_DAMAGE = 5.0;
 var health_point = MAX_HEALTH;
 
@@ -31,16 +31,22 @@ var ATTACK_COOLDOWNS = {
 	"sword_slash1":0.4
 }
 
-var death_timer = 0.0
-var damage_timer = 0.0;
+var death_timer = null
+var damage_timer = null;
 
 func take_damage(damage: float, direction: Vector2, knockback: float, knockback_cooldown: float):
+	if (zombie_dead): return;
+
 	health_point -= damage;
 	health_point = clamp(health_point, 0.0, MAX_HEALTH);
 	if (health_point <= 0.0):
-		death_blud.emitting = true
+		death_blood.emitting = true
+		damage_blood.emitting = false;
+
 		animated_sprite.visible = false
 		zombie_dead = true;
+
+		$zombie_hitbox.set_deferred("disabled", true);
 
 		death_timer.start();
 
@@ -56,7 +62,7 @@ func take_damage(damage: float, direction: Vector2, knockback: float, knockback_
 func _ready() -> void:
 	animated_sprite.play("idle");
 	sword_slash1_hitbox.set_deferred("disabled", true)
-	death_blud.emitting = false
+	death_blood.emitting = false
 	damage_blood.emitting = false;
 
 	death_timer = Timer.new()

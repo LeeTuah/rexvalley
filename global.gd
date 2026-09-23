@@ -4,12 +4,17 @@ signal health_changed(curr_health);
 signal stamina_changed(curr_stamina);
 signal mana_changed(curre_mana);
 
+const SCR_WIDTH = 1600;
+const SCR_HEIGHT = 900;
+
 const MAX_HEALTH:float = 100.0;
 const MAX_STAMINA:float = 100.0;
 const MAX_MANA:float = 100.0;
 
 var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0);
+
+var current_level: int = 0;
 
 var current_health:float = MAX_HEALTH:
 	set(value):

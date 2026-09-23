@@ -146,21 +146,21 @@ func _process(delta: float):
 		elif (Input.is_action_pressed("magic_initiate")):
 			
 			# fireball
-			if (Input.is_action_just_pressed("magic_fireball") and (global.current_mana > 20)):
+			if (Input.is_action_just_pressed("magic_fireball") and (global.current_mana > 40)):
 				animated_sprite.play("fireball_1");
 				can_input = false;
 				
 				idle_time = 0.0;
-				global.current_mana -= 14;
+				global.current_mana -= 40;
 				magic_done = true;
 			
 			# magic shield
-			elif (Input.is_action_just_pressed("magic_shield") and (global.current_mana > 20)):
+			elif (Input.is_action_just_pressed("magic_shield") and (global.current_mana > 35)):
 				animated_sprite.play("shield");
 				can_input = false;
 				
 				idle_time = 0.0;
-				global.current_mana -= 15;
+				global.current_mana -= 35;
 				magic_done = true;
 		
 		# thrust attack
@@ -215,7 +215,7 @@ func _process(delta: float):
 				fireball_instance.position = position;
 
 				# plays the second animation part 
-				get_parent().get_node("Fireball").add_child(fireball_instance);
+				get_parent().get_node("fireball").add_child(fireball_instance);
 				animated_sprite.play("fireball_2");
 			
 			# queues next colbo

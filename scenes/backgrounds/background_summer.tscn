@@ -22,7 +22,7 @@ centered = false
 
 [node name="layer2" type="Parallax2D" parent="." unique_id=260792057]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
-scroll_scale = Vector2(0.1, 0.1)
+scroll_scale = Vector2(0.1, 0)
 repeat_size = Vector2(1600, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="layer2" unique_id=34040668]
@@ -33,7 +33,7 @@ centered = false
 
 [node name="layer3" type="Parallax2D" parent="." unique_id=1688952488]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
-scroll_scale = Vector2(0.3, 0.3)
+scroll_scale = Vector2(0.3, 0)
 repeat_size = Vector2(1600, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="layer3" unique_id=1580278603]
@@ -44,7 +44,7 @@ centered = false
 
 [node name="layer4" type="Parallax2D" parent="." unique_id=1928211234]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
-scroll_scale = Vector2(0.4, 0.4)
+scroll_scale = Vector2(0.4, 0)
 repeat_size = Vector2(1600, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="layer4" unique_id=1279146065]
@@ -55,7 +55,7 @@ centered = false
 
 [node name="layer5" type="Parallax2D" parent="." unique_id=1242479161]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
-scroll_scale = Vector2(0.5, 0.5)
+scroll_scale = Vector2(0.5, 0)
 repeat_size = Vector2(1600, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="layer5" unique_id=1572260342]
