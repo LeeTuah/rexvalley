@@ -55,11 +55,19 @@ func disable_all_hitboxes():
 	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
 
+const max_camera_shake = 4.0;
+const camera_shake_fade = 7.5;
+
+var current_camera_shake = 0.0;
+
+func trigger_camera_shake():
+	current_camera_shake = max_camera_shake;
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta;
 
-	#player jumping physics
+	# player jumping physics
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and global.current_stamina >= STAMINA_DECREASE_RATE * 1.5:
 		velocity.y = JUMP_VELOCITY;
 		global.current_stamina -= STAMINA_DECREASE_RATE * 1.5;
@@ -260,6 +268,20 @@ func _process(delta: float):
 		else:
 			animation_player.play("camera_moving_up");
 
+	if (global.play_camera_shake):
+		trigger_camera_shake();
+		global.play_camera_shake = false;
+
+	if (current_camera_shake > 0.0):
+		current_camera_shake = move_toward(current_camera_shake, 0.0, camera_shake_fade * delta);
+		# $Camera2D.offset = Vector2(
+		# 	randf_range(-current_camera_shake, current_camera_shake), 
+		# 	randf_range(-current_camera_shake / 15.0, current_camera_shake / 15.0)
+		# );
+		$Camera2D.offset.x = randf_range(-current_camera_shake, current_camera_shake);
+
+		if (current_camera_shake == 0): $Camera2D.offset = Vector2.ZERO;
+
 	global.player_position = position;
 	walking_particles.emitting = walking_particles.emitting if is_on_floor() else false;
 
@@ -270,3 +292,4 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
 			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
 		);
+		# trigger_move_toward_camera_shake();

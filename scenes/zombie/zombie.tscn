@@ -179,6 +179,7 @@ scale = Vector2(3.1340942, -2.6924891)
 shape = SubResource("CapsuleShape2D_ob1uy")
 
 [node name="death_blood" type="GPUParticles2D" parent="." unique_id=2034976372]
+z_index = -1
 position = Vector2(-18, 56)
 emitting = false
 amount = 50

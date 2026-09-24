@@ -34,8 +34,11 @@ var current_mana:float = MAX_MANA:
 var current_defence:float = 0.0;
 var player_name = "test";
 
+var play_camera_shake = false;
+
 func damage_player(damage: float):
 	current_health -= damage * (1.0 - current_defence);
+	play_camera_shake = true;
 
 func heal_player(damage: float):
 	current_health += damage;

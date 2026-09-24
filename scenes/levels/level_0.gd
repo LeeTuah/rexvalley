@@ -76,6 +76,7 @@ func fade_out_all_labels():
 	fade_out($labels/sprint)
 	fade_out($labels/jump)
 	fade_out($labels/slash_atk)
+	fade_out($labels/combo_atk)
 
 func _ready() -> void:
 	# generate_initial_terrain();
@@ -87,6 +88,7 @@ func _process(_delta: float) -> void:
 	# generate_new_terrain();
 	pass
 
+# signals for area entered and exited below
 func _on_welcome_area_body_entered(body: Node2D) -> void:
 	if (body.name == "player"): fade_in($labels/welcome)
 
@@ -113,3 +115,10 @@ func _on_slash_atk_area_body_entered(body: Node2D) -> void:
 
 func _on_slash_atk_area_body_exited(body: Node2D) -> void:
 	if (body.name == "player"): fade_out($labels/slash_atk)
+
+
+func _on_combo_atk_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): fade_in($labels/combo_atk)
+
+func _on_combo_atk_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): fade_out($labels/combo_atk)
