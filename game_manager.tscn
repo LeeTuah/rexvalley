@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://1dk8ldij4tnx" path="res://assets/status_bars/mana_bar_empty.png" id="6_8jrwq"]
 [ext_resource type="PackedScene" uid="uid://cgb1rkdcipt7h" path="res://scenes/levels/level0.tscn" id="7_eakoi"]
 [ext_resource type="Texture2D" uid="uid://b4hk5wwyw3t75" path="res://assets/status_bars/mana_bar.png" id="7_gth8u"]
+[ext_resource type="PackedScene" uid="uid://bctd65a0ob5g3" path="res://scenes/player/player.tscn" id="8_8jrwq"]
 [ext_resource type="Script" uid="uid://djtwd7qq5of13" path="res://scenes/player_stats/mana_bar.gd" id="8_dq8jp"]
 
 [node name="game_manager" type="Node2D" unique_id=757637544]
@@ -38,3 +39,6 @@ texture_under = ExtResource("6_8jrwq")
 texture_progress = ExtResource("7_gth8u")
 texture_progress_offset = Vector2(48, 21.7)
 script = ExtResource("8_dq8jp")
+
+[node name="player" parent="." unique_id=1387465769 instance=ExtResource("8_8jrwq")]
+position = Vector2(793, 687)

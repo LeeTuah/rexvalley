@@ -30,3 +30,12 @@ var current_mana:float = MAX_MANA:
 	set(value):
 		current_mana = clampf(value, 0.0, MAX_MANA);
 		mana_changed.emit(current_mana);
+
+var current_defence:float = 0.0;
+var player_name = "test";
+
+func damage_player(damage: float):
+	current_health -= damage * (1.0 - current_defence);
+
+func heal_player(damage: float):
+	current_health += damage;

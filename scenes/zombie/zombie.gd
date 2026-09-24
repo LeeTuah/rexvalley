@@ -12,7 +12,7 @@ const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
 const MAX_HEALTH = 30.0;
-const ZOMBIE_DAMAGE = 5.0;
+const ZOMBIE_DAMAGE = 10.0;
 var health_point = MAX_HEALTH;
 
 var knockback_countdown = 0.0;
@@ -28,7 +28,7 @@ var zombie_dead = false;
 
 var attack_time = 0.0
 var ATTACK_COOLDOWNS = {
-	"sword_slash1":0.4
+	"sword_slash1": 0.4
 }
 
 var death_timer = null
@@ -79,6 +79,7 @@ func _ready() -> void:
 	damage_timer.one_shot = true;
 
 func _physics_process(delta: float) -> void:
+	var player_to_zombie_dist = abs(global.player_position.x - position.x);
 	player_to_zombie_dirn = sign((global.player_position.x - position.x));
 
 	if not is_on_floor():
@@ -97,13 +98,13 @@ func _physics_process(delta: float) -> void:
 		sword_slash1_hitbox.set_deferred("disabled", false)
 
 		if player_vulnerable:
-			global.current_health -= ZOMBIE_DAMAGE
+			global.damage_player(ZOMBIE_DAMAGE)
 	
 	if (knockback_countdown > 0.0):
 		knockback_countdown -= delta;
 		velocity.x = move_toward(velocity.x, 0, knockback_step * delta);
 
-	elif not is_attacking and not zombie_dead:
+	elif not is_attacking and not zombie_dead and player_to_zombie_dist <= global.SCR_WIDTH * 1.2:
 		velocity.x = player_to_zombie_dirn * SPEED;
 		animated_sprite.play("walk")
 	
@@ -137,7 +138,7 @@ func _on_attack_area_hitbox_body_exited(body: Node2D) -> void:
 
 func _on_zombie_sword_hitbox_body_entered(body: Node2D) -> void:
 	if body.name == "player":
-		global.current_health -= ZOMBIE_DAMAGE
+		global.damage_player(ZOMBIE_DAMAGE)
 		player_vulnerable = true
 
 func _on_zombie_sword_hitbox_body_exited(body: Node2D) -> void:

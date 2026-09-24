@@ -8,7 +8,7 @@ var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
 
 const SPEED = 300.0
 const ACCN = 2.5
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -480.0
 const CAMERA_DEFAULT_POS = -200.0
 
 var idle_time = 0.0;
@@ -21,7 +21,6 @@ var IDLE_TIMES = {
 	"fireball_2":	0.9 / 2.0,
 	"shield": 		1.67
 };
-var MAGIC_ANIMATIONS = ["fireball_1","fireball_2","shield"];
 
 var DAMAGE_OUTPUTS = {
 	# attack name: [damage, knockback, knockback cooldown, knockback y direction]
@@ -144,7 +143,6 @@ func _process(delta: float):
 
 		# magic attacks
 		elif (Input.is_action_pressed("magic_initiate")):
-			
 			# fireball
 			if (Input.is_action_just_pressed("magic_fireball") and (global.current_mana > 40)):
 				animated_sprite.play("fireball_1");
@@ -162,6 +160,8 @@ func _process(delta: float):
 				idle_time = 0.0;
 				global.current_mana -= 35;
 				magic_done = true;
+
+				global.current_defence += 0.5;
 		
 		# thrust attack
 		elif (Input.is_action_just_released("ui_thrust") and global.current_stamina >= 30 and not magic_done):
@@ -204,8 +204,8 @@ func _process(delta: float):
 	else:
 		walking_particles.emitting = false;
 		idle_time += delta;
-		
 		var anim = animated_sprite.animation;
+
 		if idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 			idle_time = 0.0; 
 
@@ -224,14 +224,18 @@ func _process(delta: float):
 				current_combo_counter += 1;
 				animated_sprite.play("sword_slash" + str(current_combo_counter));
 
+				# turns different sword slash hitbox based on combo counter
 				if (current_combo_counter == 2):
-					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false)
+					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false);
 					$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
 
 				elif (current_combo_counter == 3):
 					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
 				
+			elif (anim == "magic_shield"):
+				global.current_defence -= 0.5;
+
 			else:
 				can_input = true;
 				current_combo_counter = 0;

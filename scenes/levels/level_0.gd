@@ -3,6 +3,9 @@ extends Node2D
 var ground_floor_scene = preload("res://scenes/floor/ground_floor.tscn");
 var dirt_floor_scene = preload("res://scenes/floor/dirt_floor.tscn");
 
+const FADE_IN_DURATION = 0.3;
+const FADE_OUT_DURATION = 0.6;
+
 const GROUND_Y = 856.0;
 
 var leftmost_tile_x = 0.0;
@@ -52,10 +55,61 @@ func generate_new_terrain():
 		rightmost_tile_x += GROUND_TILE_LENGTH;
 		make_new_tile(rightmost_tile_x, GROUND_Y);
 
+func fade_in(label):
+	var tween = get_tree().create_tween()
+	tween.tween_property(label, "modulate:a", 1, FADE_IN_DURATION)
+
+	tween.play()
+	await tween.finished
+	tween.kill()
+
+func fade_out(label):
+	var tween = get_tree().create_tween()
+	tween.tween_property(label, "modulate:a", 0, FADE_OUT_DURATION)
+	
+	tween.play()
+	await tween.finished
+	tween.kill()
+
+func fade_out_all_labels():
+	# fade_out($labels/welcome)
+	fade_out($labels/sprint)
+	fade_out($labels/jump)
+	fade_out($labels/slash_atk)
+
 func _ready() -> void:
 	# generate_initial_terrain();
+	fade_out_all_labels();
+	$labels/welcome.text = "welcome %s!\nuse A and D to move" % global.player_name
 	pass
 
 func _process(_delta: float) -> void:
 	# generate_new_terrain();
 	pass
+
+func _on_welcome_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): fade_in($labels/welcome)
+
+func _on_welcome_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): fade_out($labels/welcome)
+
+
+func _on_sprint_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): fade_in($labels/sprint)
+
+func _on_sprint_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): fade_out($labels/sprint)
+
+
+func _on_jump_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): fade_in($labels/jump)
+
+func _on_jump_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): fade_out($labels/jump)
+
+
+func _on_slash_atk_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): fade_in($labels/slash_atk)
+
+func _on_slash_atk_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): fade_out($labels/slash_atk)
