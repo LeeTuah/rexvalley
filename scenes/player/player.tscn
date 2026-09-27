@@ -336,7 +336,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"jumping_3",
-"speed": 7.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -585,6 +585,8 @@ radius = 53.000004
 height = 136.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3lo5"]
+radius = 56.0
+height = 192.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_g7lgu"]
 radius = 36.0
@@ -642,6 +644,8 @@ shape = SubResource("CapsuleShape2D_01hqx")
 disabled = true
 
 [node name="sword_slash3_hitbox" type="CollisionShape2D" parent="sword_hitbox" unique_id=1218612930]
+position = Vector2(8, 24)
+rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_p3lo5")
 disabled = true
 

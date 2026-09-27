@@ -20,7 +20,7 @@ var IDLE_TIMES = {
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
 	"shield": 		1.67,
-	"jumping_3": 	0.43
+	"jumping_3": 	0.3
 };
 
 var DAMAGE_OUTPUTS = {
