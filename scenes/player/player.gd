@@ -19,7 +19,8 @@ var IDLE_TIMES = {
 	"thrust": 		0.5,
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
-	"shield": 		1.67
+	"shield": 		1.67,
+	"jumping_3": 	0.43
 };
 
 var DAMAGE_OUTPUTS = {
@@ -54,10 +55,12 @@ func disable_all_hitboxes():
 	$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
+	
+var is_jumping = false;
+var jump_charging = false;
 
 const max_camera_shake = 4.0;
 const camera_shake_fade = 7.5;
-
 var current_camera_shake = 0.0;
 
 func trigger_camera_shake():
@@ -66,11 +69,25 @@ func trigger_camera_shake():
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta;
+		
+	#if is_on_floor() and is_jumping:
+		#jump_ended = true;
+		#jump_started = false;
+		
+	if jump_charging and Input.is_action_just_released("ui_accept"):
+		jump_charging = false;
+		if is_on_floor() and global.current_stamina >= STAMINA_DECREASE_RATE*1.5:
+			velocity.y = JUMP_VELOCITY;
+			global.current_stamina -= STAMINA_DECREASE_RATE * 1.5;
+			is_jumping = true;
+			animated_sprite.play("jumping_2");
+		else:
+			can_input = true;
 
 	# player jumping physics
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and global.current_stamina >= STAMINA_DECREASE_RATE * 1.5:
-		velocity.y = JUMP_VELOCITY;
-		global.current_stamina -= STAMINA_DECREASE_RATE * 1.5;
+	#if Input.is_action_just_released("ui_accept") and is_on_floor() and global.current_stamina >= STAMINA_DECREASE_RATE * 1.5:
+		#velocity.y = JUMP_VELOCITY;
+		#global.current_stamina -= STAMINA_DECREASE_RATE * 1.5;
 	
 	# player direction calculation
 	direction = Input.get_axis("ui_left", "ui_right")
@@ -117,6 +134,8 @@ func _ready() -> void:
 	
 var fireball_instance;
 var magic_done = false;
+
+
 func _process(delta: float):
 	if (Input.is_action_just_pressed("ui_thrust")):
 		magic_done = false;
@@ -140,7 +159,21 @@ func _process(delta: float):
 	
 	if can_input:
 		# slash attack
-		if (Input.is_action_just_pressed("ui_attack")):
+		if (Input.is_action_just_pressed("ui_accept") and is_on_floor()):
+			animated_sprite.play("jumping_1");
+			can_input = false;
+			jump_charging = true;
+			walking_particles.emitting = false;
+			
+			#
+		#elif (Input.is_action_just_released("ui_accept") and jump_started):
+			#animated_sprite.play("jumping_2");
+		#elif (jump_ended):
+			#animated_sprite.play("jumping_3");
+			#jump_ended = false;
+			#is_jumping = false;
+		
+		elif (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1");
 			current_combo_counter = 1;
 
@@ -182,8 +215,8 @@ func _process(delta: float):
 			walking_particles.emitting = true;
 		
 		# jump attack
-		elif (Input.is_action_just_pressed("ui_accept")):
-			pass # jump animation
+		#elif (Input.is_action_just_pressed("ui_accept")):
+			#pass # jump animation
 
 		elif ((Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right")) and is_on_floor()):
 			walking_particles.emitting = true;
@@ -204,60 +237,70 @@ func _process(delta: float):
 					global.current_stamina += STAMINA_INCREASE_RATE * delta;
 		
 		# idle stamina calculation
-		elif is_on_floor():
+		elif is_on_floor() and not is_jumping:
 			animated_sprite.play("idle");
 			global.current_stamina += STAMINA_INCREASE_RATE * delta;
 			walking_particles.emitting = false;
 	
 	else:
 		walking_particles.emitting = false;
-		idle_time += delta;
+		#idle_time += delta;
 		var anim = animated_sprite.animation;
-
-		if idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
-			idle_time = 0.0; 
-
-			if (anim == "fireball_1"):
-				# creates a new fireball
-				fireball_instance = fireball_scene.instantiate();
-				fireball_instance.position = position;
-
-				# plays the second animation part 
-				get_parent().get_node("fireball").add_child(fireball_instance);
-				animated_sprite.play("fireball_2");
+		
+		if jump_charging:
+			pass;
+		elif is_jumping:
+			if is_on_floor() and velocity.y >= 0:
+				is_jumping = false;
+				animated_sprite.play("jumping_3");
+				idle_time = 0.0;
+		else:
+			idle_time += delta;
 			
-			# queues next colbo
-			elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
-				queue_next_combo = false;
-				current_combo_counter += 1;
-				animated_sprite.play("sword_slash" + str(current_combo_counter));
+			if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
+				idle_time = 0.0; 
 
-				# turns different sword slash hitbox based on combo counter
-				if (current_combo_counter == 2):
-					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false);
-					$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
+				if (anim == "fireball_1"):
+					# creates a new fireball
+					fireball_instance = fireball_scene.instantiate();
+					fireball_instance.position = position;
 
-				elif (current_combo_counter == 3):
-					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
-					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
+					# plays the second animation part 
+					get_parent().get_node("fireball").add_child(fireball_instance);
+					animated_sprite.play("fireball_2");
 				
-			elif (anim == "magic_shield"):
-				global.current_defence -= 0.5;
+				# queues next colbo
+				elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
+					queue_next_combo = false;
+					current_combo_counter += 1;
+					animated_sprite.play("sword_slash" + str(current_combo_counter));
 
-			else:
-				can_input = true;
-				current_combo_counter = 0;
-				queue_next_combo = false;
+					# turns different sword slash hitbox based on combo counter
+					if (current_combo_counter == 2):
+						$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false);
+						$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
+
+					elif (current_combo_counter == 3):
+						$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
+						$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
+					
+				elif (anim == "magic_shield"):
+					global.current_defence -= 0.5;
+
+				else:
+					can_input = true;
+					current_combo_counter = 0;
+					queue_next_combo = false;
+					
+					disable_all_hitboxes();
 				
-				disable_all_hitboxes();
-				
-		# logic checks whether the animation is sword_slash1 or sword_slash2
-		# and attack key pressed before the timer exceeds the cooldown
-		# and the combo counter is lesser than max value
-		elif ((anim == "sword_slash1" or anim == "sword_slash2") and
-			Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
-		):
-			queue_next_combo = true;
+			# logic checks whether the animation is sword_slash1 or sword_slash2
+			# and attack key pressed before the timer exceeds the cooldown
+			# and the combo counter is lesser than max value
+			elif ((anim == "sword_slash1" or anim == "sword_slash2") and
+				Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
+			):
+				queue_next_combo = true;
 		
 	
 	# camera look down functionality only for debugging right now

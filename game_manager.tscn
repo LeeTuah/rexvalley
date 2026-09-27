@@ -42,3 +42,5 @@ script = ExtResource("8_dq8jp")
 
 [node name="player" parent="." unique_id=1387465769 instance=ExtResource("8_8jrwq")]
 position = Vector2(759, 693)
+
+[node name="fireball" type="Node" parent="." unique_id=157135525]

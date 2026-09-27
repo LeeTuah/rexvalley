@@ -145,8 +145,6 @@ tile_set = SubResource("TileSet_nrgbc")
 
 [node name="terrain" type="Node" parent="." unique_id=997919827]
 
-[node name="fireball" type="Node" parent="." unique_id=902998702]
-
 [node name="zombies" type="Node2D" parent="." unique_id=860040359]
 
 [node name="zombie" parent="zombies" unique_id=1675127161 instance=ExtResource("6_d0grl")]
