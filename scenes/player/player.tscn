@@ -314,7 +314,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"jumping_1",
-"speed": 5.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
