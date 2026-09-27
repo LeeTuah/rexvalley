@@ -73,6 +73,8 @@ func _physics_process(delta: float) -> void:
 	#if is_on_floor() and is_jumping:
 		#jump_ended = true;
 		#jump_started = false;
+
+	
 		
 	if jump_charging and Input.is_action_just_released("ui_accept"):
 		jump_charging = false;
@@ -123,6 +125,24 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed);
 
 	move_and_slide();
+
+
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+
+		# print(collider, " ", collision)
+
+		if collider is TileMapLayer:
+			var contact_point = collision.get_position() - collision.get_normal() * 1.5
+
+			var local_pos = collider.to_local(contact_point)
+			var map_pos = collider.local_to_map(local_pos)
+
+			var tile_data = collider.get_cell_tile_data(map_pos)
+
+			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
+				global.current_health -= 5 * delta
 
 	# if (is_on_floor()):
 	# 	var collision = get_last_slide_collision();
