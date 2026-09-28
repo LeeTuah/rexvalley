@@ -11,7 +11,7 @@ var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
 #basic movement values
 const SPEED = 300.0
 const ACCN = 2.5
-const JUMP_VELOCITY = -480.0
+const JUMP_VELOCITY = -550.0
 const CAMERA_DEFAULT_POS = -200.0
 
 const DASH_SPEED = 1200.0;
@@ -65,6 +65,8 @@ var sprint_key_released = false;
 var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
+
+var air_time: float = 0.0;
 
 #hitboxes
 func disable_all_hitboxes():
@@ -150,6 +152,17 @@ func _physics_process(delta: float) -> void:
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
 				global.current_health -= 5 * delta
 
+	# air time calculation
+	if not is_on_floor():
+		air_time += delta;
+
+	# fall damage based on air time
+	elif is_on_floor() and air_time != 0.0:
+		if (air_time > 1.4):
+			global.damage_player((air_time - 1.4) * 10);
+
+		air_time = 0.0;
+
 func _ready() -> void:
 	global.player_position = position;
 	walking_particles.emitting = false;
@@ -202,7 +215,7 @@ func _process(delta: float):
 			animated_sprite.play("dash");
 			$player_collision_box.set_deferred("disabled", true);
 			
-		elif (Input.is_action_pressed("ui_accept") and is_on_floor() and not is_jumping and global.current_stamina >= STAMINA_DECREASE_RATE * 1.5):
+		elif (Input.is_action_pressed("ui_accept") and is_on_floor() and not is_jumping):
 			animated_sprite.play("jumping_1");
 			can_input = false;
 			idle_time = 0.0;
@@ -294,7 +307,6 @@ func _process(delta: float):
 			
 			if anim == "jumping_1":
 				velocity.y = JUMP_VELOCITY;
-				global.current_stamina -= STAMINA_DECREASE_RATE * 1.5;
 				is_jumping = true;
 				animated_sprite.play("jumping_2");
 				can_input = true;

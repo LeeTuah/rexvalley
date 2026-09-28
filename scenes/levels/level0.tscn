@@ -85,9 +85,10 @@ shape = SubResource("RectangleShape2D_nrgbc")
 [node name="sprint" type="Label" parent="labels" unique_id=1449321207]
 offset_left = 1820.0
 offset_top = 426.0
-offset_right = 3000.0
-offset_bottom = 498.0
-text = "hold sprint to move faster!!"
+offset_right = 3020.0
+offset_bottom = 573.0
+text = "hold sprint to move faster!!
+keep note of your stamina!"
 label_settings = SubResource("LabelSettings_nrgbc")
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -17,23 +17,22 @@ script = ExtResource("1_smx3j")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1138046388]
 
 [node name="health_bar" parent="CanvasLayer" unique_id=637997677 instance=ExtResource("3_o2178")]
-offset_left = 616.0
-offset_top = 736.00006
-offset_right = 730.2
-offset_bottom = 768.00006
+offset_left = 5.3346157e-05
+offset_top = 6.520748e-05
+offset_right = 114.200066
+offset_bottom = 32.000065
 
 [node name="stamina_bar" parent="CanvasLayer" unique_id=904279260 instance=ExtResource("5_vk86k")]
-offset_left = 6.3999987
-offset_top = 736.0
-offset_right = 99.59995
-offset_bottom = 768.0
+offset_top = 100.0
+offset_right = 93.59995
+offset_bottom = 132.0
 
 [node name="mana_bar" type="TextureProgressBar" parent="CanvasLayer" unique_id=2087966024]
 texture_filter = 1
-offset_left = 1304.0001
-offset_top = 744.0
-offset_right = 1416.0001
-offset_bottom = 800.0
+offset_left = 9.999998
+offset_top = 210.0
+offset_right = 122.0
+offset_bottom = 266.0
 scale = Vector2(2.5, 2.5)
 texture_under = ExtResource("6_8jrwq")
 texture_progress = ExtResource("7_gth8u")
