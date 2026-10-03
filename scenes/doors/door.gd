@@ -9,12 +9,9 @@ var door_anim_cooldown = 1.0
 var door_anim_time = 0.0
 
 func _ready() -> void:
-	enter_label.hide()
+	global.fade_out($enter_text);
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-
 	if door_currently_opening:
 		door_anim_time -= delta
 		if door_anim_time <= 0:
@@ -28,11 +25,11 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == 'player':
-		enter_label.show()
+		global.fade_in($enter_text);
 		player_before_door = true
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.name == 'player':
-		enter_label.hide()
+		global.fade_out($enter_text);
 		player_before_door = false

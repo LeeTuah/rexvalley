@@ -8,10 +8,15 @@ extends CharacterBody2D
 #preloading fireballs to load them later
 var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
 
+#jumping variables
+var is_jumping = false;
+var jump_timer = 0;
+var jumping_time = 0.35;
+
 #basic movement values
 const SPEED = 300.0
 const ACCN = 2.5
-const JUMP_VELOCITY = -550.0
+const JUMP_VELOCITY = -950.0;
 const CAMERA_DEFAULT_POS = -200.0
 
 const DASH_SPEED = 1200.0;
@@ -30,8 +35,7 @@ var IDLE_TIMES = {
 	"thrust": 		0.5,
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
-	"shield": 		1.67,
-	"jumping_1": 	0.15
+	"shield": 		1.67
 };
 
 #sword slash 1,2,3 damages
@@ -74,11 +78,6 @@ func disable_all_hitboxes():
 	$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
-	
-#jumping variables
-var is_jumping = false;
-var jump_timer = 0;
-var jumping_1_time = 0.15;
 
 #camera shake variables
 const max_camera_shake = 4.0;
@@ -93,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	
 	var was_on_floor = is_on_floor();
 	
-	if not is_on_floor() and not is_dashing:
+	if not is_on_floor() and not is_dashing and not is_jumping:
 		velocity += get_gravity() * delta;
 	
 	# player direction calculation
@@ -184,7 +183,7 @@ func _process(delta: float):
 		if dash_timer >= DASH_DURATION:
 			is_dashing = false;
 			can_input = true;
-			$player_collision_box.set_deferred("disabled", false);
+			# $player_collision_box.set_deferred("disabled", false);
 	
 	# flipping animated sprite
 	if velocity.x != 0:
@@ -201,8 +200,13 @@ func _process(delta: float):
 		if sprint_timer >= SPRINT_COOLDOWN:
 			can_run = true;
 	
-	if jump_timer > 0 and is_jumping and animated_sprite.animation == "jumping_1":
-		jump_timer += delta;
+	if jump_timer > 0.0 and Input.is_action_pressed("ui_accept"):
+		jump_timer -= delta;
+		velocity.y = JUMP_VELOCITY * jumping_time;
+	
+	elif Input.is_action_just_released("ui_accept") or jump_timer <= 0.0:
+		jump_timer = 0.0;
+		is_jumping = false;
 	
 	if can_input:
 		var anim = animated_sprite.animation;
@@ -213,13 +217,15 @@ func _process(delta: float):
 			dash_timer = 0.0;
 			global.current_stamina -= DASH_STAMINA_COST;
 			animated_sprite.play("dash");
-			$player_collision_box.set_deferred("disabled", true);
+			# $player_collision_box.set_deferred("disabled", true);
 			
-		elif (Input.is_action_pressed("ui_accept") and is_on_floor() and not is_jumping):
-			animated_sprite.play("jumping_1");
-			can_input = false;
+		elif (Input.is_action_just_pressed("ui_accept") and is_on_floor()):
 			idle_time = 0.0;
 			walking_particles.emitting = false;
+
+			velocity.y = JUMP_VELOCITY * jumping_time;
+			is_jumping = true;
+			jump_timer = jumping_time;
 		
 		elif (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1");
@@ -305,13 +311,13 @@ func _process(delta: float):
 		if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 			idle_time = 0.0; 
 			
-			if anim == "jumping_1":
-				velocity.y = JUMP_VELOCITY;
-				is_jumping = true;
-				animated_sprite.play("jumping_2");
-				can_input = true;
+			# if anim == "jumping_1":
+			# 	velocity.y = JUMP_VELOCITY;
+			# 	is_jumping = true;
+			# 	animated_sprite.play("jumping_2");
+			# 	can_input = true;
 			
-			elif (anim == "fireball_1"):
+			if (anim == "fireball_1"):
 				# creates a new fireball
 				fireball_instance = fireball_scene.instantiate();
 				fireball_instance.position = position;
@@ -383,10 +389,3 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
 			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
 		);
-
-
-var attack_time = 0.0
-var ATTACK_COOLDOWNS = {
-		"sword_slash1": 0.4
-		}
-		

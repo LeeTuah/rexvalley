@@ -80,14 +80,6 @@ region = Rect2(32, 0, 32, 32)
 atlas = ExtResource("2_dovo2")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_w8qe1"]
-atlas = ExtResource("4_h17s1")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hdvrm"]
-atlas = ExtResource("4_h17s1")
-region = Rect2(64, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_5xbmr"]
 atlas = ExtResource("4_h17s1")
 region = Rect2(96, 0, 32, 32)
@@ -352,17 +344,6 @@ animations = [{
 "loop": 1,
 "name": &"idle",
 "speed": 2.5
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_w8qe1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hdvrm")
-}],
-"loop": 0,
-"name": &"jumping_1",
-"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -663,12 +644,10 @@ position = Vector2(1, -1)
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
 animation = &"dash"
-frame = 5
-frame_progress = 1.0
 
 [node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
 position = Vector2(1, 0)
-polygon = PackedVector2Array(9, 58, -50, 58, -49, 35, -44, -1, -8, -50, 32, -50, 41, -40, 41, -19, 17, -8, 9, 21)
+polygon = PackedVector2Array(5, 58, -46, 58, -48, 35, -44, -1, -8, -50, 32, -50, 41, -40, 41, -19, 41, -19, 25, 22)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
 position = Vector2(0, -200)

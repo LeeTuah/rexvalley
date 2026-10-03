@@ -42,3 +42,23 @@ func damage_player(damage: float):
 
 func heal_player(damage: float):
 	current_health += damage;
+
+
+const FADE_IN_DURATION = 0.3;
+const FADE_OUT_DURATION = 0.6;
+
+func fade_in(label, fade_in_duration = FADE_IN_DURATION):
+	var tween = get_tree().create_tween()
+	tween.tween_property(label, "modulate:a", 1, fade_in_duration)
+
+	tween.play()
+	await tween.finished
+	tween.kill()
+
+func fade_out(label, fade_out_duration = FADE_OUT_DURATION):
+	var tween = get_tree().create_tween()
+	tween.tween_property(label, "modulate:a", 0, fade_out_duration)
+	
+	tween.play()
+	await tween.finished
+	tween.kill()

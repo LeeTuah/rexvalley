@@ -123,18 +123,113 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u2suf"]
-size = Vector2(187, 227)
+size = Vector2(167.75, 227)
+
+[sub_resource type="Animation" id="Animation_u2suf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_rwaou"]
+resource_name = "idle"
+length = 3.0000000000000004
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"idle"]
+}
+
+[sub_resource type="Animation" id="Animation_0grph"]
+resource_name = "walk"
+length = 0.75
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"walk"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.083, 0.16666667, 0.25, 0.333, 0.416, 0.5, 0.583, 0.666),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0grph"]
+_data = {
+&"RESET": SubResource("Animation_u2suf"),
+&"idle": SubResource("Animation_rwaou"),
+&"walk": SubResource("Animation_0grph")
+}
 
 [node name="boss_level_0" type="CharacterBody2D" unique_id=1410776574]
 script = ExtResource("1_m465a")
 
 [node name="animated_sprite" type="AnimatedSprite2D" parent="." unique_id=1950844654]
+position = Vector2(0.99999994, 0)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_nrgbc")
-animation = &"walk"
-frame = 5
-frame_progress = 0.48272714
+animation = &"idle"
 
 [node name="body_collision_shape" type="CollisionShape2D" parent="." unique_id=1596351007]
-position = Vector2(-22.5, 7.5)
+visible = false
+position = Vector2(-3.125, 1)
 shape = SubResource("RectangleShape2D_u2suf")
+
+[node name="animation_player" type="AnimationPlayer" parent="." unique_id=789752521]
+libraries/ = SubResource("AnimationLibrary_0grph")

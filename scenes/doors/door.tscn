@@ -35,7 +35,9 @@ animations = [{
 
 [sub_resource type="LabelSettings" id="LabelSettings_1x56m"]
 font = ExtResource("3_d8f5h")
-font_size = 32
+font_size = 48
+shadow_size = 12
+shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ob1uy"]
 size = Vector2(61, 86)
@@ -44,22 +46,22 @@ size = Vector2(61, 86)
 script = ExtResource("1_cjc7v")
 
 [node name="door_animation" type="AnimatedSprite2D" parent="." unique_id=438939920]
+z_index = -1
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_ob1uy")
 animation = &"door_opening"
 frame_progress = 0.9612457
 
 [node name="enter_text" type="Label" parent="." unique_id=2055552590]
-offset_left = -80.0
-offset_top = -154.0
-offset_right = 82.0
-offset_bottom = -113.0
+offset_left = -81.0
+offset_top = -183.0
+offset_right = 81.0
+offset_bottom = -139.0
 text = "ENTER"
 label_settings = SubResource("LabelSettings_1x56m")
 horizontal_alignment = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1690825481]
-visible = false
+[node name="door_collision_polygon" type="CollisionShape2D" parent="." unique_id=1690825481]
 position = Vector2(-1, 10)
 scale = Vector2(3, 3)
 shape = SubResource("RectangleShape2D_ob1uy")

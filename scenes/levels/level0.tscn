@@ -5,7 +5,6 @@
 [ext_resource type="FontFile" uid="uid://nln6p8r4gwnp" path="res://assets/font/upheavtt.ttf" id="3_ry65h"]
 [ext_resource type="Texture2D" uid="uid://6m88bkkb84g" path="res://assets/tiles/Enclosure1.png" id="4_1nvli"]
 [ext_resource type="Texture2D" uid="uid://bimm86xn76se7" path="res://assets/tiles/obstacles.png" id="4_ry65h"]
-[ext_resource type="PackedScene" uid="uid://b3xxhyeggas7o" path="res://scenes/bosses/boss_level_0.tscn" id="6_1nvli"]
 [ext_resource type="PackedScene" uid="uid://cuvau7h1fv6" path="res://scenes/zombie/zombie.tscn" id="6_d0grl"]
 [ext_resource type="Texture2D" uid="uid://cqtx3g5skd75" path="res://assets/tiles/background_start.png" id="6_vals0"]
 [ext_resource type="PackedScene" uid="uid://cl77i1ek1r32y" path="res://scenes/doors/door.tscn" id="9_oem7y"]
@@ -256,9 +255,6 @@ position = Vector2(14240, 704)
 
 [node name="zombie5" parent="zombies" unique_id=2134844190 instance=ExtResource("6_d0grl")]
 position = Vector2(14744, 512)
-
-[node name="boss_level_0" parent="." unique_id=1410776574 instance=ExtResource("6_1nvli")]
-position = Vector2(1466, 646)
 
 [node name="door" parent="." unique_id=1030508395 instance=ExtResource("9_oem7y")]
 texture_filter = 1
