@@ -14,6 +14,8 @@ func swap_levels(old_scene, new_scene_path, _player_coordinates) -> void:
 
 	# change player position here
 
+	get_node("player").position = _player_coordinates
+
 func _ready() -> void:
 	pass
 

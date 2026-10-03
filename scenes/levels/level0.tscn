@@ -260,6 +260,8 @@ position = Vector2(14744, 512)
 texture_filter = 1
 texture_repeat = 2
 position = Vector2(17087, 1395)
+next_scene = "res://scenes/levels/level0_enclosure.tscn"
+next_scene_spawn_point = Vector2(500, 700)
 
 [connection signal="body_entered" from="labels/welcome/welcome_area" to="." method="_on_welcome_area_body_entered"]
 [connection signal="body_exited" from="labels/welcome/welcome_area" to="." method="_on_welcome_area_body_exited"]

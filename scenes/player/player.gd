@@ -105,7 +105,7 @@ func _physics_process(delta: float) -> void:
 	var speed = last_speed;
 
 	# sprinting logic calc (acceleration)
-	if (Input.is_action_pressed("ui_sprint") and can_run):
+	if (Input.is_action_pressed("ui_sprint") and can_run and is_on_floor()):
 		speed = move_toward(speed, SPEED * ACCN, SPEED / 15.0);
 		last_speed = speed;
 		sprint_key_released = false;
