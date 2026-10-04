@@ -28,7 +28,7 @@ var zombie_dead = false;
 
 var attack_time = 0.0
 var ATTACK_COOLDOWNS = {
-	"sword_slash1": 0.4
+	"sword_slash1": 0.72
 }
 
 var death_timer = null

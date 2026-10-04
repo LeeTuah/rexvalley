@@ -13,25 +13,37 @@ region = Rect2(0, 0, 64, 64)
 atlas = ExtResource("1_nlave")
 region = Rect2(64, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d2kyw"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1l86"]
 atlas = ExtResource("3_r1l86")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1eykj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_rovuw"]
 atlas = ExtResource("3_r1l86")
 region = Rect2(64, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lamel"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2kyw"]
 atlas = ExtResource("3_r1l86")
 region = Rect2(128, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_x18kf"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eykj"]
 atlas = ExtResource("3_r1l86")
 region = Rect2(192, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ltkux"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_lamel"]
 atlas = ExtResource("3_r1l86")
 region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x18kf"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltkux"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iiuu8"]
+atlas = ExtResource("3_r1l86")
+region = Rect2(448, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aymqy"]
 atlas = ExtResource("4_rovuw")
@@ -72,6 +84,12 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_r1l86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rovuw")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_d2kyw")
 }, {
 "duration": 1.0,
@@ -85,10 +103,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ltkux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iiuu8")
 }],
 "loop": 0,
 "name": &"sword_slash1",
-"speed": 9.0
+"speed": 11.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -154,7 +175,7 @@ script = ExtResource("1_ncyl7")
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_nrgbc")
 animation = &"sword_slash1"
-frame = 4
+frame = 7
 frame_progress = 1.0
 
 [node name="zombie_hitbox" type="CollisionShape2D" parent="." unique_id=806944028]
