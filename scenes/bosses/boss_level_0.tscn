@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cja2p6s3oypth" path="res://assets/bosses/boss_level_0_idle.png" id="1_eesqy"]
 [ext_resource type="Script" uid="uid://bdo4rbamdiw8e" path="res://scenes/bosses/boss_level_0.gd" id="1_m465a"]
 [ext_resource type="Texture2D" uid="uid://c8ibpbiov71up" path="res://assets/bosses/boss_level_0_walk.png" id="3_u2suf"]
+[ext_resource type="Texture2D" uid="uid://b2rvqgf013fwc" path="res://assets/status_bars/health_bar.png" id="4_rwaou"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m465a"]
 atlas = ExtResource("1_eesqy")
@@ -233,3 +234,15 @@ shape = SubResource("RectangleShape2D_u2suf")
 
 [node name="animation_player" type="AnimationPlayer" parent="." unique_id=789752521]
 libraries/ = SubResource("AnimationLibrary_0grph")
+
+[node name="BossLayer" type="CanvasLayer" parent="." unique_id=143040547]
+
+[node name="BossBar" type="TextureProgressBar" parent="BossLayer" unique_id=1166080347]
+offset_left = 498.0
+offset_top = 812.0
+offset_right = 1111.0
+offset_bottom = 852.0
+scale = Vector2(22, 2)
+value = 100.0
+texture_progress = ExtResource("4_rwaou")
+texture_progress_offset = Vector2(-2, 0)
