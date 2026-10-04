@@ -22,7 +22,8 @@ func _on_boss_spawn_area_body_entered(body: Node2D) -> void:
 		$static_wall/CollisionShape2D.set_deferred("disabled", false);
 
 		var boss_instance = boss.instantiate();
-		boss_instance.position = Vector2(7825, 640);
+		boss_instance.position = Vector2(-7500, 640);
 
-		get_parent().add_child(boss_instance);
+		# add_child(boss_instance);
+		get_parent().call_deferred("add_child", boss_instance)
 		boss_spawned = true;

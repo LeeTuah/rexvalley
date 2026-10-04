@@ -15,7 +15,7 @@ func _ready() -> void:
 	global.fade_out($enter_text);
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player_before_door and Input.is_action_just_pressed("ui_interact") and not door_opened:
 		door_animation.play("door_opening")
 		door_opened = true

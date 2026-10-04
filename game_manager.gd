@@ -13,7 +13,6 @@ func swap_levels(old_scene, new_scene_path, _player_coordinates) -> void:
 	move_child(new_scene_instance, 0);
 
 	# change player position here
-
 	get_node("player").position = _player_coordinates
 
 func _ready() -> void:

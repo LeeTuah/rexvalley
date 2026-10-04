@@ -26,4 +26,4 @@ func _physics_process(delta: float) -> void:
 func _process(_delta: float) -> void:
 	var flip: bool = global.player_direction;
 
-	$animated_sprite.flip_h = flip;
+	$animated_sprite.flip_h = not flip;
