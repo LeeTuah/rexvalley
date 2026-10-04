@@ -62,6 +62,7 @@ func _process(_delta: float) -> void:
 			drain_timer -= _delta
 		else:
 			slow_bar.value = move_toward(slow_bar.value, current_health, _delta * SLOW_BAR_DRAIN_RATE)
+			print("Entering here")
 
 	#boss dead
 	elif slow_bar.value <= 0.0:

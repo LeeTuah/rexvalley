@@ -19,12 +19,9 @@ const ACCN = 2.5
 const JUMP_VELOCITY = -950.0;
 const CAMERA_DEFAULT_POS = -200.0
 
-const DASH_SPEED = 1200.0;
-const DASH_DURATION = 0.25;
+const DASH_SPEED = 3000.0;
+const DASH_DURATION = 0.30;
 const DASH_STAMINA_COST = 25.0;
-
-var is_dashing = false;
-var dash_timer = 0.0;
 
 # ime when inputs are not allowed during an animation
 var idle_time = 0.0;
@@ -35,7 +32,10 @@ var IDLE_TIMES = {
 	"thrust": 		0.5,
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
-	"shield": 		1.67
+	"shield": 		1.67,
+	"dash_1": 0.5,
+	"dash_2": DASH_DURATION,
+	"dash_3": 0.4
 };
 
 # sword slash 1,2,3 damages
@@ -90,7 +90,7 @@ func _physics_process(delta: float) -> void:
 	
 	var was_on_floor = is_on_floor();
 	
-	if not is_on_floor() and not is_dashing and not is_jumping:
+	if not is_on_floor() and animated_sprite.animation != "dash_2":
 		velocity += get_gravity() * delta;
 	
 	# player direction calculation
@@ -117,7 +117,7 @@ func _physics_process(delta: float) -> void:
 		last_speed = speed;
 		
 	#quick dash
-	if is_dashing:
+	if animated_sprite.animation == "dash_2":
 		velocity.x = thrust_direction * DASH_SPEED;
 	#thrust movement calculation
 	elif (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
@@ -164,14 +164,6 @@ func _process(delta: float):
 	
 	global.current_mana += MANA_INCREASE_RATE * delta;
 	
-	if is_dashing:
-		dash_timer += delta;
-		walking_particles.emitting = true;
-		if dash_timer >= DASH_DURATION:
-			is_dashing = false;
-			can_input = true;
-			# $player_collision_box.set_deferred("disabled", false);
-	
 	# flipping animated sprite
 	if velocity.x != 0:
 		var velocity_condition = -1 if velocity.x < 0 else 1;
@@ -199,11 +191,11 @@ func _process(delta: float):
 		var anim = animated_sprite.animation;
 		
 		if Input.is_action_just_pressed("ui_dash") and global.current_stamina >= DASH_STAMINA_COST :
-			is_dashing = true;
+			animated_sprite.play("dash_1");
 			can_input = false;
-			dash_timer = 0.0;
+			idle_time = 0.0;
 			global.current_stamina -= DASH_STAMINA_COST;
-			animated_sprite.play("dash");
+			walking_particles.emitting = false;
 			# $player_collision_box.set_deferred("disabled", true);
 			
 		elif (Input.is_action_just_pressed("ui_accept") and is_on_floor()):
@@ -298,13 +290,17 @@ func _process(delta: float):
 		if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 			idle_time = 0.0; 
 			
+			if (anim == "dash_1"):
+				animated_sprite.play("dash_2");
+			elif (anim == "dash_2"):
+				animated_sprite.play("dash_3");
 			# if anim == "jumping_1":
 			# 	velocity.y = JUMP_VELOCITY;
 			# 	is_jumping = true;
 			# 	animated_sprite.play("jumping_2");
 			# 	can_input = true;
 			
-			if (anim == "fireball_1"):
+			elif (anim == "fireball_1"):
 				# creates a new fireball
 				fireball_instance = fireball_scene.instantiate();
 				fireball_instance.position = position;
