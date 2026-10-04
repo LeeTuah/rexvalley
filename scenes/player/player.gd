@@ -1,19 +1,19 @@
 extends CharacterBody2D
 
-#initialising some initial nodes
+# initialising some initial nodes
 @onready var animated_sprite = $AnimatedSprite2D;
 @onready var animation_player = $AnimationPlayer;
 @onready var walking_particles = $walking_particles;
 
-#preloading fireballs to load them later
+# preloading fireballs to load them later
 var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
 
-#jumping variables
+# jumping variables
 var is_jumping = false;
 var jump_timer = 0;
 var jumping_time = 0.35;
 
-#basic movement values
+# basic movement values
 const SPEED = 300.0
 const ACCN = 2.5
 const JUMP_VELOCITY = -950.0;
@@ -26,7 +26,7 @@ const DASH_STAMINA_COST = 25.0;
 var is_dashing = false;
 var dash_timer = 0.0;
 
-#time when inputs are not allowed during an animation
+# ime when inputs are not allowed during an animation
 var idle_time = 0.0;
 var IDLE_TIMES = {
 	"sword_slash1": 0.4, 
@@ -38,7 +38,7 @@ var IDLE_TIMES = {
 	"shield": 		1.67
 };
 
-#sword slash 1,2,3 damages
+# sword slash 1,2,3 damages
 var DAMAGE_OUTPUTS = {
 	# attack name: [damage, knockback, knockback cooldown, knockback y direction]
 	"sword_slash1": [10.0, 50.0, 2.3, -1.2],
@@ -47,22 +47,22 @@ var DAMAGE_OUTPUTS = {
 	"thrust": 		[25.0, 130.0, 2.0,  0.0],
 };
 
-#sprint variables
+# sprint variables
 var can_run = true;
 var sprint_timer = 0.0;
 const SPRINT_COOLDOWN = 3.0
 
-#status bars rates
+# status bars rates
 const STAMINA_DECREASE_RATE = 4;
 const STAMINA_INCREASE_RATE = 4.6;
 const MANA_INCREASE_RATE = 2.3;
 
-#combo variables for sword slash
+# combo variables for sword slash
 var current_combo_counter = 0;
 const MAX_COMBO = 3;
 var queue_next_combo = false;
 
-#some more variables
+# some more variables
 var last_speed = SPEED;
 var sprint_key_released = false;
 
@@ -70,16 +70,14 @@ var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
 
-var air_time: float = 0.0;
-
-#hitboxes
+# disabling all hitboxes hitboxes
 func disable_all_hitboxes():
 	$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
 
-#camera shake variables
+# camera shake variables
 const max_camera_shake = 4.0;
 const camera_shake_fade = 7.5;
 var current_camera_shake = 0.0;
@@ -87,7 +85,7 @@ var current_camera_shake = 0.0;
 func trigger_camera_shake():
 	current_camera_shake = max_camera_shake;
 	
-#all player movements happen here
+# all player movements happen here
 func _physics_process(delta: float) -> void:
 	
 	var was_on_floor = is_on_floor();
@@ -151,26 +149,15 @@ func _physics_process(delta: float) -> void:
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
 				global.current_health -= 5 * delta
 
-	# air time calculation
-	if not is_on_floor():
-		air_time += delta;
-
-	# fall damage based on air time
-	elif is_on_floor() and air_time != 0.0:
-		if (air_time > 1.4):
-			global.damage_player((air_time - 1.4) * 10);
-
-		air_time = 0.0;
-
 func _ready() -> void:
 	global.player_position = position;
 	walking_particles.emitting = false;
 
-#variables for fireball and magic
+# variables for fireball and magic
 var fireball_instance;
 var magic_done = false;
 
-#all animation playing, pausing, terminating happens here also 
+# all animation playing, pausing, terminating happens here also 
 func _process(delta: float):
 	if (Input.is_action_just_pressed("ui_thrust")):
 		magic_done = false;
@@ -381,7 +368,7 @@ func _process(delta: float):
 	global.player_position = position;
 	walking_particles.emitting = walking_particles.emitting if is_on_floor() else false;
 	
-#sword attacks hitboxes check for enemy attacks
+# sword attacks hitboxes check for enemy attacks
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
 		var anim = animated_sprite.animation;
