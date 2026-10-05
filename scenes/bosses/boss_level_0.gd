@@ -55,16 +55,16 @@ func _physics_process(delta: float) -> void:
 	# velocity.x = -SPEED;
 	move_and_slide()
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var flip: bool = global.player_direction;
 	$animated_sprite.flip_h = not flip;
 
 	if slow_bar.value > current_health:
 		if drain_timer >= 0.0:
-			drain_timer -= _delta
+			drain_timer -= delta
+
 		else:
-			slow_bar.value = move_toward(slow_bar.value, current_health, _delta * SLOW_BAR_DRAIN_RATE)
-			print("Entering here")
+			slow_bar.value = move_toward(slow_bar.value, current_health, delta * SLOW_BAR_DRAIN_RATE)
 
 	#boss dead
 	elif slow_bar.value <= 0.0:

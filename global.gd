@@ -36,9 +36,9 @@ var player_name = "test";
 
 var play_camera_shake = false;
 
-func damage_player(damage: float):
+func damage_player(damage: float, cam_shake: bool = true):
 	current_health -= damage * (1.0 - current_defence);
-	play_camera_shake = true;
+	play_camera_shake = cam_shake;
 
 func heal_player(damage: float):
 	current_health += damage;

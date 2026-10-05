@@ -324,7 +324,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"dash_1",
-"speed": 10.0
+"speed": 50.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -349,7 +349,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"dash_3",
-"speed": 10.0
+"speed": 13.3
 }, {
 "frames": [{
 "duration": 1.0,
@@ -719,7 +719,7 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
-animation = &"plunge_land"
+animation = &"dash_1"
 
 [node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
 position = Vector2(1, 0)

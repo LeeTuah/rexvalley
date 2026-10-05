@@ -13,20 +13,20 @@ var is_jumping = false;
 var jump_timer = 0;
 var jumping_time = 0.35;
 
+const COYOTE_TIME = 0.20;
+const JUMP_BUFFER_TIME = 0.15;
+var coyote_timer = 0.0;
+var jump_buffer_timer = 0.0;
+
 # basic movement values
 const SPEED = 300.0
 const ACCN = 2.5
-const JUMP_VELOCITY = -950.0;
+const JUMP_VELOCITY = -650.0;
 const CAMERA_DEFAULT_POS = -200.0
 
 const DASH_SPEED = 3000.0;
 const DASH_DURATION = 0.30;
-const DASH_STAMINA_COST = 25.0;
-
-const COYOTE_TIME = 0.15;
-const JUMP_BUFFER_TIME = 0.15;
-var coyote_timer = 0.0;
-var jump_buffer_timer = 0.0;
+const DASH_STAMINA_COST = 5.0;
 
 #time when inputs are not allowed during an animation
 var idle_time = 0.0;
@@ -38,9 +38,9 @@ var IDLE_TIMES = {
 	"fireball_1":	0.9 / 2.0,
 	"fireball_2":	0.9 / 2.0,
 	"shield": 		1.67,
-	"dash_1": 0.5,
+	"dash_1": 0.1,
 	"dash_2": DASH_DURATION,
-	"dash_3": 0.4,
+	"dash_3": 0.3,
 	"plunge_fall": 99.0, #to make it infinite
 	"plunge_land": 0.5,
 };
@@ -79,8 +79,6 @@ var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
 
-var shield_timer = 0.0;
-
 # disabling all hitboxes hitboxes
 func disable_all_hitboxes():
 	$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
@@ -99,14 +97,13 @@ func trigger_camera_shake():
 	
 # all player movements happen here
 func _physics_process(delta: float) -> void:
-	
 	var was_on_floor = is_on_floor();
 	
 	if not is_on_floor() and animated_sprite.animation != "dash_2":
 		# velocity += get_gravity() * delta;
 
 		if velocity.y > 0:
-			velocity += get_gravity() * 1.5 * delta
+			velocity += get_gravity() * 2.003 * delta
 		else:
 			velocity += get_gravity() * delta
 	
@@ -115,7 +112,6 @@ func _physics_process(delta: float) -> void:
 	if direction != 0:
 		global.player_direction = direction;
 		thrust_direction = direction; 
-
 	
 	var speed = last_speed;
 
@@ -136,9 +132,11 @@ func _physics_process(delta: float) -> void:
 	#quick dash
 	if animated_sprite.animation == "dash_2":
 		velocity.x = thrust_direction * DASH_SPEED;
+
 	#thrust movement calculation
 	elif (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
 		velocity.x = thrust_direction * SPEED * 130 * delta;
+
 	elif (animated_sprite.animation == "plunge_fall"):
 		velocity.y = 1200.0;
 		velocity.x = 0;
@@ -157,15 +155,16 @@ func _physics_process(delta: float) -> void:
 		
 		if (animated_sprite.animation == "plunge_fall"):
 			animated_sprite.play("plunge_land");
+
 		elif can_input:
 			animated_sprite.play("jumping_3");
+
 	elif was_on_floor and not is_on_floor() and not is_jumping:
 		coyote_timer = COYOTE_TIME;
 
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
-
 
 		if collider is TileMapLayer:
 			var contact_point = collision.get_position() - collision.get_normal() * 1.5;
@@ -174,10 +173,7 @@ func _physics_process(delta: float) -> void:
 			var tile_data = collider.get_cell_tile_data(map_pos);
 			
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
-				var damage_amount = 5 * delta;
-				if animated_sprite.animation == "shield":
-					damage_amount *= 0.2;
-				global.current_health -= damage_amount;
+				global.damage_player(5 * delta, false);
 
 func _ready() -> void:
 	global.player_position = position;
@@ -202,11 +198,6 @@ func _process(delta: float):
 		$sword_hitbox.scale.x = velocity_condition;
 		$player_collision_box.scale.x = velocity_condition;
 		walking_particles.position.x = 35.0 if velocity.x < 0 else -35.0;
-		
-	if animated_sprite.animation == "plunge_fall":
-		animated_sprite.rotation = deg_to_rad(90) * ($sword_hitbox.scale.x);
-	else:
-		animated_sprite.rotation = 0;
 
 	# sprint cooldown
 	if not can_run:
@@ -216,7 +207,6 @@ func _process(delta: float):
 	
 	if jump_timer > 0.0 and Input.is_action_pressed("ui_accept"):
 		jump_timer -= delta;
-		# velocity.y = JUMP_VELOCITY * 0.55;
 	
 	elif Input.is_action_just_released("ui_accept") and jump_timer > 0.0:
 		velocity.y *= 0.5
@@ -241,22 +231,25 @@ func _process(delta: float):
 		
 		if Input.is_action_just_pressed("ui_sprint") and global.current_stamina >= DASH_STAMINA_COST :
 			animated_sprite.play("dash_1");
+
 			can_input = false;
 			idle_time = 0.0;
+
 			global.current_stamina -= DASH_STAMINA_COST;
 			walking_particles.emitting = false;
-			# $player_collision_box.set_deferred("disabled", true);
 			
 		elif (jump_buffer_timer > 0.0 and (is_on_floor() or coyote_timer > 0.0)):
 			idle_time = 0.0;
 			walking_particles.emitting = false;
+
 			velocity.y = JUMP_VELOCITY;
 			is_jumping = true;
+
 			jump_timer = jumping_time;
 			jump_buffer_timer = 0.0;
 			coyote_timer = 0.0;
 		
-		elif (Input.is_action_just_pressed("ui_attack") and Input.is_action_pressed("ui_look_down") and not is_on_floor()):
+		elif (Input.is_action_just_pressed("ui_attack") and Input.is_action_pressed("ui_plunge") and not is_on_floor()):
 			animated_sprite.play("plunge_fall");
 			can_input = false;
 			idle_time = 0.0;
@@ -288,7 +281,6 @@ func _process(delta: float):
 				can_input = false;
 				
 				idle_time = 0.0;
-				shield_timer = 0.0;
 				global.current_mana -= 35;
 				magic_done = true;
 				
@@ -312,8 +304,6 @@ func _process(delta: float):
 			if not (anim.begins_with("fireball") or anim == "shield" or anim == "thrust"):
 				if animated_sprite.animation != "jumping_2":
 					animated_sprite.play("jumping_2");
-			if global.current_stamina < 0: 
-				global.current_stamina = 0;
 
 		elif (direction != 0 and is_on_floor()):
 			walking_particles.emitting = true;
@@ -346,8 +336,6 @@ func _process(delta: float):
 		walking_particles.emitting = false;
 		idle_time += delta;	
 		var anim = animated_sprite.animation;
-		if anim == "shield":
-			shield_timer += delta;
 			
 		if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 			idle_time = 0.0; 
@@ -356,11 +344,6 @@ func _process(delta: float):
 				animated_sprite.play("dash_2");
 			elif (anim == "dash_2"):
 				animated_sprite.play("dash_3");
-			# if anim == "jumping_1":
-			# 	velocity.y = JUMP_VELOCITY;
-			# 	is_jumping = true;
-			# 	animated_sprite.play("jumping_2");
-			# 	can_input = true;
 			
 			elif (anim == "fireball_1"):
 				# creates a new fireball
@@ -385,9 +368,6 @@ func _process(delta: float):
 				elif (current_combo_counter == 3):
 					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
-				
-			elif (anim == "magic_shield"):
-				global.current_defence -= 0.5;
 
 			else:
 				can_input = true;
@@ -395,6 +375,9 @@ func _process(delta: float):
 				queue_next_combo = false;
 				
 				disable_all_hitboxes();
+
+			if (anim == "shield"):
+				global.current_defence -= 0.5;
 			
 		# logic checks whether the animation is sword_slash1 or sword_slash2
 		# and attack key pressed before the timer exceeds the cooldown
@@ -435,17 +418,3 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
 			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
 		);
-
-
-func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO, knockback_force :float = 0.0, knockback_cd :float = 0.0):
-	if animated_sprite.animation == "shield":
-		if shield_timer <= 0.2:
-			amount = 0;
-			global.current_mana += 20;
-			global.current_stamina += 20;
-			trigger_camera_shake();
-		else:
-			amount *= 0.2;
-	
-	global.damage_player(amount);
-	
