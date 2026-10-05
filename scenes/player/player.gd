@@ -103,7 +103,12 @@ func _physics_process(delta: float) -> void:
 	var was_on_floor = is_on_floor();
 	
 	if not is_on_floor() and animated_sprite.animation != "dash_2":
-		velocity += get_gravity() * delta;
+		# velocity += get_gravity() * delta;
+
+		if velocity.y > 0:
+			velocity += get_gravity() * 1.5 * delta
+		else:
+			velocity += get_gravity() * delta
 	
 	# player direction calculation
 	direction = Input.get_axis("ui_left", "ui_right")
@@ -211,16 +216,23 @@ func _process(delta: float):
 	
 	if jump_timer > 0.0 and Input.is_action_pressed("ui_accept"):
 		jump_timer -= delta;
-		velocity.y = JUMP_VELOCITY * 0.55;
+		# velocity.y = JUMP_VELOCITY * 0.55;
 	
-	elif Input.is_action_just_released("ui_accept") or jump_timer <= 0.0:
+	elif Input.is_action_just_released("ui_accept") and jump_timer > 0.0:
+		velocity.y *= 0.5
 		jump_timer = 0.0;
 		is_jumping = false;
+
+	elif jump_timer <= 0.0:
+		jump_timer = 0.0
+		is_jumping = false
 		
 	if coyote_timer > 0.0:
 		coyote_timer -= delta;
+
 	if jump_buffer_timer > 0.0:
 		jump_buffer_timer -= delta;
+
 	if Input.is_action_just_pressed("ui_accept"):
 		jump_buffer_timer = JUMP_BUFFER_TIME;
 	
@@ -238,7 +250,7 @@ func _process(delta: float):
 		elif (jump_buffer_timer > 0.0 and (is_on_floor() or coyote_timer > 0.0)):
 			idle_time = 0.0;
 			walking_particles.emitting = false;
-			velocity.y = JUMP_VELOCITY * 0.55;
+			velocity.y = JUMP_VELOCITY;
 			is_jumping = true;
 			jump_timer = jumping_time;
 			jump_buffer_timer = 0.0;
