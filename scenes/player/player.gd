@@ -23,7 +23,12 @@ const DASH_SPEED = 3000.0;
 const DASH_DURATION = 0.30;
 const DASH_STAMINA_COST = 25.0;
 
-# ime when inputs are not allowed during an animation
+const COYOTE_TIME = 0.15;
+const JUMP_BUFFER_TIME = 0.15;
+var coyote_timer = 0.0;
+var jump_buffer_timer = 0.0;
+
+#time when inputs are not allowed during an animation
 var idle_time = 0.0;
 var IDLE_TIMES = {
 	"sword_slash1": 0.4, 
@@ -35,7 +40,9 @@ var IDLE_TIMES = {
 	"shield": 		1.67,
 	"dash_1": 0.5,
 	"dash_2": DASH_DURATION,
-	"dash_3": 0.4
+	"dash_3": 0.4,
+	"plunge_fall": 99.0, #to make it infinite
+	"plunge_land": 0.5,
 };
 
 # sword slash 1,2,3 damages
@@ -45,6 +52,8 @@ var DAMAGE_OUTPUTS = {
 	"sword_slash2": [13.0, 50.0, 2.3, -1.2],
 	"sword_slash3": [16.0, 50.0, 2.3, -1.2],
 	"thrust": 		[25.0, 130.0, 2.0,  0.0],
+	"plunge_fall":  [20.0, 100.0, 1.0, -2.0],
+	"plunge_land":  [35.0, 400.0, 2.5, -1.0],
 };
 
 # sprint variables
@@ -70,6 +79,8 @@ var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
 
+var shield_timer = 0.0;
+
 # disabling all hitboxes hitboxes
 func disable_all_hitboxes():
 	$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
@@ -84,6 +95,7 @@ var current_camera_shake = 0.0;
 
 func trigger_camera_shake():
 	current_camera_shake = max_camera_shake;
+
 	
 # all player movements happen here
 func _physics_process(delta: float) -> void:
@@ -122,6 +134,10 @@ func _physics_process(delta: float) -> void:
 	#thrust movement calculation
 	elif (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
 		velocity.x = thrust_direction * SPEED * 130 * delta;
+	elif (animated_sprite.animation == "plunge_fall"):
+		velocity.y = 1200.0;
+		velocity.x = 0;
+		
 	else:
 		if direction:
 			velocity.x = direction * speed;
@@ -132,8 +148,14 @@ func _physics_process(delta: float) -> void:
 	
 	if not was_on_floor and is_on_floor():
 		is_jumping = false;
-		if can_input:
+		coyote_timer = 0.0;
+		
+		if (animated_sprite.animation == "plunge_fall"):
+			animated_sprite.play("plunge_land");
+		elif can_input:
 			animated_sprite.play("jumping_3");
+	elif was_on_floor and not is_on_floor() and not is_jumping:
+		coyote_timer = COYOTE_TIME;
 
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
@@ -147,7 +169,10 @@ func _physics_process(delta: float) -> void:
 			var tile_data = collider.get_cell_tile_data(map_pos);
 			
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
-				global.current_health -= 5 * delta
+				var damage_amount = 5 * delta;
+				if animated_sprite.animation == "shield":
+					damage_amount *= 0.2;
+				global.current_health -= damage_amount;
 
 func _ready() -> void:
 	global.player_position = position;
@@ -172,6 +197,11 @@ func _process(delta: float):
 		$sword_hitbox.scale.x = velocity_condition;
 		$player_collision_box.scale.x = velocity_condition;
 		walking_particles.position.x = 35.0 if velocity.x < 0 else -35.0;
+		
+	if animated_sprite.animation == "plunge_fall":
+		animated_sprite.rotation = deg_to_rad(90) * ($sword_hitbox.scale.x);
+	else:
+		animated_sprite.rotation = 0;
 
 	# sprint cooldown
 	if not can_run:
@@ -181,16 +211,23 @@ func _process(delta: float):
 	
 	if jump_timer > 0.0 and Input.is_action_pressed("ui_accept"):
 		jump_timer -= delta;
-		velocity.y = JUMP_VELOCITY * jumping_time;
+		velocity.y = JUMP_VELOCITY * 0.55;
 	
 	elif Input.is_action_just_released("ui_accept") or jump_timer <= 0.0:
 		jump_timer = 0.0;
 		is_jumping = false;
+		
+	if coyote_timer > 0.0:
+		coyote_timer -= delta;
+	if jump_buffer_timer > 0.0:
+		jump_buffer_timer -= delta;
+	if Input.is_action_just_pressed("ui_accept"):
+		jump_buffer_timer = JUMP_BUFFER_TIME;
 	
 	if can_input:
 		var anim = animated_sprite.animation;
 		
-		if Input.is_action_just_pressed("ui_dash") and global.current_stamina >= DASH_STAMINA_COST :
+		if Input.is_action_just_pressed("ui_sprint") and global.current_stamina >= DASH_STAMINA_COST :
 			animated_sprite.play("dash_1");
 			can_input = false;
 			idle_time = 0.0;
@@ -198,13 +235,20 @@ func _process(delta: float):
 			walking_particles.emitting = false;
 			# $player_collision_box.set_deferred("disabled", true);
 			
-		elif (Input.is_action_just_pressed("ui_accept") and is_on_floor()):
+		elif (jump_buffer_timer > 0.0 and (is_on_floor() or coyote_timer > 0.0)):
 			idle_time = 0.0;
 			walking_particles.emitting = false;
-
-			velocity.y = JUMP_VELOCITY * jumping_time;
+			velocity.y = JUMP_VELOCITY * 0.55;
 			is_jumping = true;
 			jump_timer = jumping_time;
+			jump_buffer_timer = 0.0;
+			coyote_timer = 0.0;
+		
+		elif (Input.is_action_just_pressed("ui_attack") and Input.is_action_pressed("ui_look_down") and not is_on_floor()):
+			animated_sprite.play("plunge_fall");
+			can_input = false;
+			idle_time = 0.0;
+			$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", false);
 		
 		elif (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1");
@@ -232,6 +276,7 @@ func _process(delta: float):
 				can_input = false;
 				
 				idle_time = 0.0;
+				shield_timer = 0.0;
 				global.current_mana -= 35;
 				magic_done = true;
 				
@@ -249,13 +294,16 @@ func _process(delta: float):
 		
 		elif not is_on_floor():
 			walking_particles.emitting = false;
+			if(Input.is_action_pressed("ui_sprint") and can_run and direction != 0):
+				global.current_stamina -= STAMINA_DECREASE_RATE * delta;
+				
 			if not (anim.begins_with("fireball") or anim == "shield" or anim == "thrust"):
 				if animated_sprite.animation != "jumping_2":
 					animated_sprite.play("jumping_2");
 			if global.current_stamina < 0: 
 				global.current_stamina = 0;
 
-		elif ((Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right")) and is_on_floor()):
+		elif (direction != 0 and is_on_floor()):
 			walking_particles.emitting = true;
 
 			# sprinting
@@ -286,7 +334,9 @@ func _process(delta: float):
 		walking_particles.emitting = false;
 		idle_time += delta;	
 		var anim = animated_sprite.animation;
-		
+		if anim == "shield":
+			shield_timer += delta;
+			
 		if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
 			idle_time = 0.0; 
 			
@@ -364,6 +414,7 @@ func _process(delta: float):
 	global.player_position = position;
 	walking_particles.emitting = walking_particles.emitting if is_on_floor() else false;
 	
+
 # sword attacks hitboxes check for enemy attacks
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 	if (body.has_method("take_damage")):
@@ -372,3 +423,17 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
 			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
 		);
+
+
+func take_damage(amount: float, knockback_dir: Vector2 = Vector2.ZERO, knockback_force :float = 0.0, knockback_cd :float = 0.0):
+	if animated_sprite.animation == "shield":
+		if shield_timer <= 0.2:
+			amount = 0;
+			global.current_mana += 20;
+			global.current_stamina += 20;
+			trigger_camera_shake();
+		else:
+			amount *= 0.2;
+	
+	global.damage_player(amount);
+	

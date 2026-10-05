@@ -49,6 +49,7 @@ func take_damage(damage: float, direction: Vector2, knockback: float, knockback_
 		$zombie_hitbox.set_deferred("disabled", true);
 
 		death_timer.start();
+		
 
 	else:
 		damage_blood.emitting = true;
@@ -77,7 +78,7 @@ func _ready() -> void:
 		damage_blood.emitting = false;
 	);
 	damage_timer.one_shot = true;
-
+	
 func _physics_process(delta: float) -> void:
 	var player_to_zombie_dist = abs(global.player_position.x - position.x);
 	player_to_zombie_dirn = sign((global.player_position.x - position.x));
@@ -116,6 +117,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+		
 
 func _process(_delta: float) -> void:
 	player_to_zombie_dirn = sign((global.player_position.x - position.x));

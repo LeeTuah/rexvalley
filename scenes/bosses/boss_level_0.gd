@@ -31,6 +31,8 @@ func _ready():
 	death_timer.connect("timeout", queue_free)
 
 
+
+
 func take_damage(damage: float, _direction: Vector2, _knockback: float, _knockback_cooldown: float) -> void:
 	current_health -= damage
 	current_health = clampf(current_health, 0.0, MAX_HEALTH)

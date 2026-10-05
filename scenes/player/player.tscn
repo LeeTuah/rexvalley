@@ -112,6 +112,22 @@ region = Rect2(256, 0, 32, 32)
 atlas = ExtResource("4_h17s1")
 region = Rect2(288, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvjb1"]
+atlas = ExtResource("4_h17s1")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bysbl"]
+atlas = ExtResource("4_h17s1")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wy34"]
+atlas = ExtResource("4_h17s1")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ymths"]
+atlas = ExtResource("4_h17s1")
+region = Rect2(288, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_75vfm"]
 atlas = ExtResource("3_gmlin")
 region = Rect2(0, 0, 32, 32)
@@ -407,6 +423,28 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_fvjb1")
+}],
+"loop": 1,
+"name": &"plunge_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bysbl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wy34")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ymths")
+}],
+"loop": 0,
+"name": &"plunge_land",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_75vfm")
 }, {
 "duration": 1.0,
@@ -681,7 +719,7 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
-animation = &"dash_1"
+animation = &"plunge_land"
 
 [node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
 position = Vector2(1, 0)
