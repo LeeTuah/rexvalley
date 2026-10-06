@@ -242,10 +242,10 @@ libraries/ = SubResource("AnimationLibrary_0grph")
 
 [node name="SlowBar" type="TextureProgressBar" parent="BossLayer" unique_id=1703017995]
 texture_filter = 1
-offset_left = 587.0
-offset_top = 737.0
-offset_right = 843.0
-offset_bottom = 777.0
+offset_left = 411.0
+offset_top = 736.0
+offset_right = 667.0
+offset_bottom = 776.0
 scale = Vector2(3, 3)
 value = 100.0
 texture_under = ExtResource("4_ky63o")
@@ -253,10 +253,10 @@ texture_progress = ExtResource("5_dip0l")
 texture_progress_offset = Vector2(10, 0)
 
 [node name="BossBar" type="TextureProgressBar" parent="BossLayer" unique_id=1166080347]
-offset_left = 587.0
-offset_top = 737.0
-offset_right = 1200.0
-offset_bottom = 777.0
+offset_left = 411.0
+offset_top = 736.0
+offset_right = 1024.0
+offset_bottom = 776.0
 scale = Vector2(3, 3)
 value = 100.0
 texture_over = ExtResource("6_6ne8v")

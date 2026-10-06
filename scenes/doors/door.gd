@@ -40,9 +40,9 @@ func level_data_given() -> bool:
 		print("Next Scene door name not given")
 		return false
 
-	if not next_scene_spawn_point:
-		print("Coordinates not given")
-		return false
+	#if not next_scene_spawn_point:
+		#print("Coordinates not given")
+		#return false
 
 	return true
 

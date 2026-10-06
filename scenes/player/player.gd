@@ -25,7 +25,7 @@ const JUMP_VELOCITY = -650.0;
 const CAMERA_DEFAULT_POS = -200.0
 
 const DASH_SPEED = 3000.0;
-const DASH_DURATION = 0.30;
+const DASH_DURATION = 0.211463;
 const DASH_STAMINA_COST = 5.0;
 
 #time when inputs are not allowed during an animation
