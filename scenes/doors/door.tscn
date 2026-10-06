@@ -53,6 +53,8 @@ animation = &"door_opening"
 frame_progress = 0.9612457
 
 [node name="enter_text" type="Label" parent="." unique_id=2055552590]
+light_mask = 2
+visibility_layer = 2
 offset_left = -81.0
 offset_top = -183.0
 offset_right = 81.0

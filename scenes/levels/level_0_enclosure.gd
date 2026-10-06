@@ -13,7 +13,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 	# $player_point_light.position = global.player_position;
-
+	
 
 func _on_boss_spawn_area_body_entered(body: Node2D) -> void:
 	if (boss_spawned): return;
