@@ -179,7 +179,6 @@ func _ready() -> void:
 	global.player_position = position;
 	walking_particles.emitting = false;
 
-# variables for fireball and magic
 var fireball_instance;
 var magic_done = false;
 

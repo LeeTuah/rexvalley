@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dthqsrfqox4i4" path="res://scenes/levels/level_0_enclosure.gd" id="1_c5bwv"]
 [ext_resource type="Texture2D" uid="uid://6m88bkkb84g" path="res://assets/tiles/Enclosure1.png" id="1_gtupv"]
 [ext_resource type="Texture2D" uid="uid://ki0jlxdudaw" path="res://assets/light/point_light.png" id="3_pyekh"]
-[ext_resource type="PackedScene" uid="uid://cl77i1ek1r32y" path="res://scenes/doors/door.tscn" id="5_e2o5l"]
+[ext_resource type="PackedScene" uid="uid://cl77i1ek1r32y" path="res://scenes/interactable/door.tscn" id="5_e2o5l"]
 [ext_resource type="Texture2D" uid="uid://qc481ltmxt46" path="res://assets/doors/door_enclosure0.png" id="6_bv0le"]
 [ext_resource type="Texture2D" uid="uid://bcb8qqjf8t7xc" path="res://assets/tiles/portal_gate.png" id="7_rro2f"]
 
@@ -377,7 +377,7 @@ z_index = 1
 position = Vector2(391, 435)
 next_scene = "res://scenes/levels/level0.tscn"
 next_door = "door"
-next_scene_spawn_point = Vector2(23050, 1500)
+next_scene_spawn_point = Vector2(26825, 1500)
 sprite_frames = SubResource("SpriteFrames_rro2f")
 
 [node name="portal_sprite_right" type="AnimatedSprite2D" parent="." unique_id=356642751]
