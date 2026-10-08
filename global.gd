@@ -11,6 +11,8 @@ const MAX_HEALTH:float = 100.0;
 const MAX_STAMINA:float = 100.0;
 const MAX_MANA:float = 100.0;
 
+const CACTUS_DAMAGE:float = 20.0;
+
 var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0);
 

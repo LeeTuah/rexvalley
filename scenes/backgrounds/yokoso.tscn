@@ -10,43 +10,47 @@
 [node name="layer1" type="Parallax2D" parent="." unique_id=59114320]
 modulate = Color(0.85882354, 0.85882354, 0.85882354, 1)
 scroll_scale = Vector2(0, 0)
-repeat_size = Vector2(1600, 0)
+repeat_size = Vector2(2284, 0)
+repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="layer1" unique_id=387063405]
 texture_filter = 1
-scale = Vector2(2.5, 2.5)
+scale = Vector2(3.57, 3.57)
 texture = ExtResource("1_7ejpf")
 centered = false
 
 [node name="layer2" type="Parallax2D" parent="." unique_id=1123887136]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.1, 0)
-repeat_size = Vector2(1600, 0)
+repeat_size = Vector2(2284, 0)
+repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="layer2" unique_id=111788928]
 texture_filter = 1
-scale = Vector2(2.5, 2.5)
+scale = Vector2(3.57, 3.57)
 texture = ExtResource("2_7ejpf")
 centered = false
 
 [node name="layer3" type="Parallax2D" parent="." unique_id=2066142038]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.3, 0)
-repeat_size = Vector2(1600, 0)
+repeat_size = Vector2(2284, 0)
+repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="layer3" unique_id=1450209954]
 texture_filter = 1
-scale = Vector2(2.5, 2.5)
+scale = Vector2(3.57, 3.57)
 texture = ExtResource("3_7ejpf")
 centered = false
 
 [node name="layer4" type="Parallax2D" parent="." unique_id=1138664025]
 modulate = Color(0.85814106, 0.85814106, 0.85814106, 1)
 scroll_scale = Vector2(0.5, 0)
-repeat_size = Vector2(1600, 0)
+repeat_size = Vector2(2284, 0)
+repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="layer4" unique_id=127687033]
 texture_filter = 1
-scale = Vector2(2.5, 2.5)
+scale = Vector2(3.57, 3.57)
 texture = ExtResource("4_7ejpf")
 centered = false

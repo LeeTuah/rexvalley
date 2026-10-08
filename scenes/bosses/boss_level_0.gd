@@ -5,7 +5,7 @@ extends CharacterBody2D
 @onready var boss_bar = $BossLayer/BossBar
 @onready var slow_bar = $BossLayer/SlowBar
 
-const MAX_HEALTH : float = 1000.0
+const MAX_HEALTH : float = 20.0
 const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 const DRAIN_COOLDOWN = 0.5

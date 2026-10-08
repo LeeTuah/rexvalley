@@ -60,6 +60,8 @@ func fade_out_all_labels():
 	global.fade_out($labels/slash_atk)
 	global.fade_out($labels/combo_atk)
 	global.fade_out($labels/dash)
+	global.fade_out($labels/look_down)
+	global.fade_out($labels/dash_dirn)
 
 func _ready() -> void:
 	# generate_initial_terrain();
@@ -112,3 +114,17 @@ func _on_dash_area_body_entered(body: Node2D) -> void:
 
 func _on_dash_area_body_exited(body: Node2D) -> void:
 	if (body.name == "player"): global.fade_out($labels/dash)
+
+
+func _on_look_down_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): global.fade_in($labels/look_down)
+
+func _on_look_down_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): global.fade_out($labels/look_down)
+
+
+func _on_dash_dirn_area_body_entered(body: Node2D) -> void:
+	if (body.name == "player"): global.fade_in($labels/dash_dirn)
+
+func _on_dash_dirn_area_body_exited(body: Node2D) -> void:
+	if (body.name == "player"): global.fade_out($labels/dash_dirn)

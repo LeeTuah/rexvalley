@@ -173,7 +173,7 @@ func _physics_process(delta: float) -> void:
 			var tile_data = collider.get_cell_tile_data(map_pos);
 			
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
-				global.damage_player(5 * delta, false);
+				global.damage_player(global.CACTUS_DAMAGE * delta, false);
 
 func _ready() -> void:
 	global.player_position = position;

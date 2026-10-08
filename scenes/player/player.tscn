@@ -719,8 +719,7 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_01hqx")
-animation = &"dash_2"
-frame_progress = 0.51196945
+animation = &"plunge_land"
 
 [node name="player_collision_box" type="CollisionPolygon2D" parent="." unique_id=609036338]
 position = Vector2(1, 0)
@@ -728,6 +727,7 @@ polygon = PackedVector2Array(5, 58, -46, 58, -48, 35, -44, -1, -8, -50, 32, -50,
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=525130686]
 position = Vector2(0, -200)
+zoom = Vector2(0.7, 0.7)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=357818277]
 root_node = NodePath("../Camera2D")
