@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c6pyygwarvnwk" path="res://assets/tiles/Enclosure_background.png" id="6_oem7y"]
 [ext_resource type="Texture2D" uid="uid://cqtx3g5skd75" path="res://assets/tiles/background_start.png" id="6_vals0"]
 [ext_resource type="PackedScene" uid="uid://cl77i1ek1r32y" path="res://scenes/interactable/door.tscn" id="9_oem7y"]
+[ext_resource type="PackedScene" uid="uid://c0btbxqo2scvm" path="res://scenes/interactable/campfire.tscn" id="10_a76di"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nrgbc"]
 font = ExtResource("3_ry65h")
@@ -391,6 +392,11 @@ position = Vector2(26826, 1395)
 next_scene = "res://scenes/levels/level0_enclosure.tscn"
 next_door = "Door1"
 next_scene_spawn_point = Vector2(400, 700)
+
+[node name="campfire" parent="." unique_id=1293370023 instance=ExtResource("10_a76di")]
+z_index = 1
+texture_filter = 1
+position = Vector2(25109, 1013)
 
 [connection signal="body_entered" from="labels/welcome/welcome_area" to="." method="_on_welcome_area_body_entered"]
 [connection signal="body_exited" from="labels/welcome/welcome_area" to="." method="_on_welcome_area_body_exited"]

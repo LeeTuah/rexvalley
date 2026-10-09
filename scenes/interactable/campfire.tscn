@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c0btbxqo2scvm"]
 
+[ext_resource type="Script" uid="uid://ce08onc284sxx" path="res://scenes/interactable/campfire.gd" id="1_4v1kl"]
 [ext_resource type="Texture2D" uid="uid://bfmkucinmvwne" path="res://assets/tiles/campfire.png" id="1_ta3ij"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4v1kl"]
@@ -79,16 +80,22 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
-size = Vector2(91, 92)
+size = Vector2(41.5, 48.5)
 
 [node name="campfire" type="Area2D" unique_id=1293370023]
+script = ExtResource("1_4v1kl")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1268625205]
-scale = Vector2(2, 2)
+[node name="campfire_animation" type="AnimatedSprite2D" parent="." unique_id=1268625205]
+position = Vector2(3.8146973e-06, -0.5000038)
+scale = Vector2(3.4, 2.975)
 sprite_frames = SubResource("SpriteFrames_nrgbc")
 animation = &"burning"
 frame_progress = 0.5092937
 
 [node name="campfire_area" type="CollisionShape2D" parent="." unique_id=312971668]
-position = Vector2(-0.5, -14)
+position = Vector2(0.5, -2.5)
+scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_nrgbc")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

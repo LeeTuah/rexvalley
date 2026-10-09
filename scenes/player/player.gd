@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var animated_sprite = $AnimatedSprite2D;
 @onready var animation_player = $AnimationPlayer;
 @onready var walking_particles = $walking_particles;
+#@onready var campfire = get_parent().get_node()
 
 # preloading fireballs to load them later
 var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
@@ -43,6 +44,7 @@ var IDLE_TIMES = {
 	"dash_3": 0.3,
 	"plunge_fall": 99.0, #to make it infinite
 	"plunge_land": 0.5,
+	"campfire":1.7
 };
 
 # sword slash 1,2,3 damages
@@ -79,6 +81,8 @@ var can_input = true;
 var direction :float = 1
 var thrust_direction = 1;
 
+var is_interacting = false
+
 # disabling all hitboxes hitboxes
 func disable_all_hitboxes():
 	$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
@@ -93,6 +97,24 @@ var current_camera_shake = 0.0;
 
 func trigger_camera_shake():
 	current_camera_shake = max_camera_shake;
+
+
+func play_campfire_animation(player_adjustment, look_right) -> void:
+	is_interacting = true
+	can_input = false
+	idle_time = 0.0
+	global_position.x = player_adjustment
+
+	$AnimatedSprite2D.flip_h = not look_right
+	if look_right:
+		look_right = 1
+	else:
+		look_right = -1
+
+	$sword_hitbox.scale.x = look_right
+	$player_collision_box.scale.x = look_right
+
+	animated_sprite.play("campfire")
 
 	
 # all player movements happen here
@@ -109,6 +131,10 @@ func _physics_process(delta: float) -> void:
 	
 	# player direction calculation
 	direction = Input.get_axis("ui_left", "ui_right")
+
+	if is_interacting:
+		direction = 0
+
 	if direction != 0:
 		global.player_direction = direction;
 		thrust_direction = direction; 
@@ -144,6 +170,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if direction:
 			velocity.x = direction * speed;
+
 		else:
 			velocity.x = move_toward(velocity.x, 0, speed);
 			
@@ -321,14 +348,12 @@ func _process(delta: float):
 				animated_sprite.play("walk");
 				if can_run:
 					global.current_stamina += STAMINA_INCREASE_RATE * delta;
-		
-		# idle stamina calculation
-		#elif is_on_floor() and velocity.y >= 0: #and not is_jumping:
+
 		else:
-			if not (animated_sprite.animation == "jumping_3" and animated_sprite.is_playing()):
+			if not (animated_sprite.animation == "jumping_3" and animated_sprite.is_playing() and not is_interacting):
 				animated_sprite.play("idle");
+
 			global.current_stamina += STAMINA_INCREASE_RATE * delta;
-			#animated_sprite.play("idle");
 			walking_particles.emitting = false;
 			
 	else:
@@ -368,10 +393,17 @@ func _process(delta: float):
 					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
 
+			elif anim == "campfire":
+				is_interacting = false
+				can_input = true
+				disable_all_hitboxes()
+
+
 			else:
 				can_input = true;
 				current_combo_counter = 0;
 				queue_next_combo = false;
+				is_interacting = false
 				
 				disable_all_hitboxes();
 
