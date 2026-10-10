@@ -24,6 +24,7 @@ const PLAYER_ATTACK_DIST: float = 200.0;
 const SWORD_SLASH_DOWN_CHANCE: float = 67;
 
 var boss_flipped = false;
+var boss_dead = false;
 
 const ATTACK_ANIMS = ["sword_slash_up", "sword_slash_down"];
 
@@ -36,7 +37,7 @@ func _ready():
 
 	death_timer = Timer.new()
 	add_child(death_timer)
-	death_timer.wait_time = 0.4
+	death_timer.wait_time = 2.0
 	death_timer.connect("timeout", queue_free)
 
 	animation_tree.active = true;
@@ -55,6 +56,8 @@ func take_damage(damage: float, _direction: Vector2, _knockback: float, _knockba
 	drain_timer = DRAIN_COOLDOWN
 
 func _physics_process(delta: float) -> void:
+	if (boss_dead): return;
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
@@ -85,6 +88,10 @@ func animations_or_sum():
 	
 	if state_machine.get_current_node() == "sword_slash_up":
 		animation_tree["parameters/conditions/do_slash_up"] = false;
+	
+	if current_health <= 0.0:
+		animation_tree["parameters/conditions/is_dead"] = true;
+		boss_dead = true;
 
 func _process(delta: float) -> void:
 	player_distance = abs(position.x - global.player_position.x);
