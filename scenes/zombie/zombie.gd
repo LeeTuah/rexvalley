@@ -34,6 +34,13 @@ var ATTACK_COOLDOWNS = {
 var death_timer = null
 var damage_timer = null;
 
+func enable_collision_interaction(value: bool):
+	set_collision_layer_value(2, value);
+	set_collision_mask_value(2, value);
+
+	set_collision_layer_value(1, not value);
+	set_collision_mask_value(1, not value);
+
 func take_damage(damage: float, direction: Vector2, knockback: float, knockback_cooldown: float):
 	if (zombie_dead): return;
 
@@ -121,6 +128,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	player_to_zombie_dirn = sign((global.player_position.x - position.x));
+	enable_collision_interaction(global.is_player_dashing);
 
 	animated_sprite.flip_h = player_to_zombie_dirn < 0;
 	$zombie_hitbox.position.x = ZOMBIE_HITBOX_OFFSET[0] if player_to_zombie_dirn < 0 else -ZOMBIE_HITBOX_OFFSET[0];

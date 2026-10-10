@@ -15,6 +15,7 @@ const CACTUS_DAMAGE:float = 20.0;
 
 var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0);
+var is_player_dashing: bool = false;
 
 var current_level: int = 0;
 

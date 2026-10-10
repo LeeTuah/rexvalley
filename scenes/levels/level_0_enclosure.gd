@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 	
 
 func _on_boss_spawn_area_body_entered(body: Node2D) -> void:
-	if (boss_spawned): return;
+	if (boss_spawned or boss_dead): return;
 
 	if (body.name == "player"):
 		$static_wall/CollisionShape2D.set_deferred("disabled", false);

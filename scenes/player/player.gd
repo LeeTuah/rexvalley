@@ -366,6 +366,8 @@ func _process(delta: float):
 			
 			if (anim == "dash_1"):
 				animated_sprite.play("dash_2");
+				global.is_player_dashing = true;
+
 			elif (anim == "dash_2"):
 				animated_sprite.play("dash_3");
 			
@@ -400,6 +402,9 @@ func _process(delta: float):
 
 
 			else:
+				if (anim == "dash_3"):
+					global.is_player_dashing = false;
+
 				can_input = true;
 				current_combo_counter = 0;
 				queue_next_combo = false;
