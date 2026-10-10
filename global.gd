@@ -13,6 +13,11 @@ const MAX_MANA:float = 100.0;
 
 const CACTUS_DAMAGE:float = 20.0;
 
+var campfire_status = {
+	"campfire_enclosure" : false
+}
+
+
 var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0);
 var is_player_dashing: bool = false;
@@ -45,6 +50,12 @@ func damage_player(damage: float, cam_shake: bool = true):
 
 func heal_player(damage: float):
 	current_health += damage;
+
+
+func rest_player():
+	current_health = MAX_HEALTH
+	current_stamina = MAX_STAMINA
+	current_mana = MAX_MANA
 
 
 const FADE_IN_DURATION = 0.3;
