@@ -44,8 +44,14 @@ var IDLE_TIMES = {
 	"dash_3": 0.3,
 	"plunge_fall": 99.0, #to make it infinite
 	"plunge_land": 0.5,
-	"campfire":1.7
+	"campfire":1.7,
+	"plunge_full_1": 0.25,
+	"plunge_full_2": 0.35,
+	"plunge_full_3": 0.8,
+	#"plunge_full_4": 0.3,
+	"plunge_full_5": 0.625,
 };
+
 
 # sword slash 1,2,3 damages
 var DAMAGE_OUTPUTS = {
@@ -53,9 +59,9 @@ var DAMAGE_OUTPUTS = {
 	"sword_slash1": [10.0, 50.0, 2.3, -1.2],
 	"sword_slash2": [13.0, 50.0, 2.3, -1.2],
 	"sword_slash3": [16.0, 50.0, 2.3, -1.2],
-	"thrust": 		[25.0, 130.0, 2.0,  0.0],
-	"plunge_fall":  [20.0, 100.0, 1.0, -2.0],
-	"plunge_land":  [35.0, 400.0, 2.5, -1.0],
+	"thrust": 		[25.0, 130.0, 2.0, 0.0],
+	"plunge_full_4":     [25.0, 130.0, 2.0, 0.0],
+	"plunge_full_5":     [45.0, 400.0, 2.5, -1.5],
 };
 
 # sprint variables
@@ -89,6 +95,7 @@ func disable_all_hitboxes():
 	$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", true);
 	$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", true);
+	$sword_hitbox/sword_plunge_hitbox.set_deferred("disabled", true);
 
 # camera shake variables
 const max_camera_shake = 4.0;
@@ -120,8 +127,9 @@ func play_campfire_animation(player_adjustment, look_right) -> void:
 # all player movements happen here
 func _physics_process(delta: float) -> void:
 	var was_on_floor = is_on_floor();
+	var is_plunging_rising = animated_sprite.animation in ["plunge_full_2","plunge_full_3"];
 	
-	if not is_on_floor() and animated_sprite.animation != "dash_2":
+	if not is_on_floor() and animated_sprite.animation != "dash_2" and not is_plunging_rising:
 		# velocity += get_gravity() * delta;
 
 		if velocity.y > 0:
@@ -158,6 +166,16 @@ func _physics_process(delta: float) -> void:
 	#quick dash
 	if animated_sprite.animation == "dash_2":
 		velocity.x = thrust_direction * DASH_SPEED;
+	
+	elif (animated_sprite.animation == "plunge_full_2"):
+		velocity.y = JUMP_VELOCITY * 3.0;
+		velocity.x = direction * SPEED * 0.4;
+	elif (animated_sprite.animation == "plunge_full_3"):
+		velocity.y = 0.0;
+		velocity.x = 0.0;
+	elif (animated_sprite.animation == "plunge_full_4"):
+		velocity.y = 1700.0;
+		velocity.x = 0.0;
 
 	#thrust movement calculation
 	elif (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
@@ -180,8 +198,11 @@ func _physics_process(delta: float) -> void:
 		is_jumping = false;
 		coyote_timer = 0.0;
 		
-		if (animated_sprite.animation == "plunge_fall"):
-			animated_sprite.play("plunge_land");
+		if (animated_sprite.animation == "plunge_full_4"):
+			animated_sprite.play("plunge_full_5");
+			idle_time = 0.0;
+			global.current_stamina -= 50;
+			trigger_camera_shake();
 
 		elif can_input:
 			animated_sprite.play("jumping_3");
@@ -201,6 +222,7 @@ func _physics_process(delta: float) -> void:
 			
 			if tile_data and tile_data.get_custom_data("damaging_obstacle"):
 				global.damage_player(global.CACTUS_DAMAGE * delta, false);
+
 
 func _ready() -> void:
 	global.player_position = position;
@@ -274,12 +296,17 @@ func _process(delta: float):
 			jump_timer = jumping_time;
 			jump_buffer_timer = 0.0;
 			coyote_timer = 0.0;
-		
-		elif (Input.is_action_just_pressed("ui_attack") and Input.is_action_pressed("ui_plunge") and not is_on_floor()):
-			animated_sprite.play("plunge_fall");
+			
+		elif (Input.is_action_pressed("ui_attack") and Input.is_action_pressed("ui_plunge") and global.current_stamina >= 45):
 			can_input = false;
 			idle_time = 0.0;
-			$sword_hitbox/sword_thrust_hitbox.set_deferred("disabled", false);
+			walking_particles.emitting = false;
+			
+			if is_on_floor():
+				animated_sprite.play("plunge_full_1");
+			else:
+				animated_sprite.play("plunge_full_2");
+				is_jumping = true;
 		
 		elif (Input.is_action_just_pressed("ui_attack")):
 			animated_sprite.play("sword_slash1");
@@ -361,60 +388,71 @@ func _process(delta: float):
 		idle_time += delta;	
 		var anim = animated_sprite.animation;
 			
-		if IDLE_TIMES.has(anim) and idle_time >= IDLE_TIMES[anim]: # checking counter wait time from dictionary above
-			idle_time = 0.0; 
-			
-			if (anim == "dash_1"):
-				animated_sprite.play("dash_2");
-				global.is_player_dashing = true;
-
-			elif (anim == "dash_2"):
-				animated_sprite.play("dash_3");
-			
-			elif (anim == "fireball_1"):
-				# creates a new fireball
-				fireball_instance = fireball_scene.instantiate();
-				fireball_instance.position = position;
-
-				# plays the second animation part 
-				get_parent().get_node("fireball").add_child(fireball_instance);
-				animated_sprite.play("fireball_2");
-			
-			# queues next colbo
-			elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
-				queue_next_combo = false;
-				current_combo_counter += 1;
-				animated_sprite.play("sword_slash" + str(current_combo_counter));
-
-				# turns different sword slash hitbox based on combo counter
-				if (current_combo_counter == 2):
-					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false);
-					$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
-
-				elif (current_combo_counter == 3):
-					$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
-					$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
-
-			elif anim == "campfire":
-				is_interacting = false
-				can_input = true
-				disable_all_hitboxes()
-
-
-			else:
-				if (anim == "dash_3"):
-					global.is_player_dashing = false;
-
-				can_input = true;
-				current_combo_counter = 0;
-				queue_next_combo = false;
-				is_interacting = false
+		if IDLE_TIMES.has(anim): # checking counter wait time from dictionary above
+			if idle_time >= IDLE_TIMES[anim]:
+				idle_time = 0.0; 
 				
-				disable_all_hitboxes();
+				if (anim == "plunge_full_1"):
+					animated_sprite.play("plunge_full_2");
+					is_jumping = true;
+				elif (anim == "plunge_full_2"):
+					animated_sprite.play("plunge_full_3");
+				elif (anim == "plunge_full_3"):
+					animated_sprite.play("plunge_full_4");
+					$sword_hitbox/sword_plunge_hitbox.set_deferred("disabled", false);
+				
+				
+				elif (anim == "dash_1"):
+					animated_sprite.play("dash_2");
+					global.is_player_dashing = true;
 
-			if (anim == "shield"):
-				global.current_defence -= 0.5;
-			
+				elif (anim == "dash_2"):
+					animated_sprite.play("dash_3");
+				
+				elif (anim == "fireball_1"):
+					# creates a new fireball
+					fireball_instance = fireball_scene.instantiate();
+					fireball_instance.position = position;
+
+					# plays the second animation part 
+					get_parent().get_node("fireball").add_child(fireball_instance);
+					animated_sprite.play("fireball_2");
+				
+				# queues next colbo
+				elif (((anim == "sword_slash1" or anim == "sword_slash2") and queue_next_combo)):
+					queue_next_combo = false;
+					current_combo_counter += 1;
+					animated_sprite.play("sword_slash" + str(current_combo_counter));
+
+					# turns different sword slash hitbox based on combo counter
+					if (current_combo_counter == 2):
+						$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", false);
+						$sword_hitbox/sword_slash1_hitbox.set_deferred("disabled", true);
+
+					elif (current_combo_counter == 3):
+						$sword_hitbox/sword_slash2_hitbox.set_deferred("disabled", true);
+						$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
+
+				elif anim == "campfire":
+					is_interacting = false
+					can_input = true
+					disable_all_hitboxes()
+
+
+				else:
+					if (anim == "dash_3"):
+						global.is_player_dashing = false;
+
+					can_input = true;
+					current_combo_counter = 0;
+					queue_next_combo = false;
+					is_interacting = false
+					
+					disable_all_hitboxes();
+
+				if (anim == "shield"):
+					global.current_defence -= 0.5;
+				
 		# logic checks whether the animation is sword_slash1 or sword_slash2
 		# and attack key pressed before the timer exceeds the cooldown
 		# and the combo counter is lesser than max value
@@ -454,3 +492,9 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 			DAMAGE_OUTPUTS[anim][0], Vector2(global.player_direction,DAMAGE_OUTPUTS[anim][3]), 
 			DAMAGE_OUTPUTS[anim][1], DAMAGE_OUTPUTS[anim][2]
 		);
+		
+		if anim == "plunge_full_4":
+			animated_sprite.play("plunge_full_5");
+			idle_time=0.0;
+			global.current_stamina -= 50;
+			trigger_camera_shake();
