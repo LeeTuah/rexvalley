@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var animated_sprite = $AnimatedSprite2D;
 @onready var animation_player = $AnimationPlayer;
 @onready var walking_particles = $walking_particles;
+@onready var base_sprite_scale = $AnimatedSprite2D.scale;
 #@onready var campfire = get_parent().get_node()
 
 # preloading fireballs to load them later
@@ -42,28 +43,26 @@ var IDLE_TIMES = {
 	"dash_1": 0.1,
 	"dash_2": DASH_DURATION,
 	"dash_3": 0.3,
-	"plunge_fall": 99.0, #to make it infinite
-	"plunge_land": 0.5,
 	"campfire":1.7,
 	"plunge_full_1": 0.25,
 	"plunge_full_2": 0.35,
 	"plunge_full_3": 0.8,
 	#"plunge_full_4": 0.3,
 	"plunge_full_5": 0.625,
+	"heal": 2.7,
 };
 
 
-# sword slash 1,2,3 damages
+# sword slash 1,2,3 damage
 var DAMAGE_OUTPUTS = {
 	# attack name: [damage, knockback, knockback cooldown, knockback y direction]
 	"sword_slash1": [10.0, 50.0, 2.3, -1.2],
 	"sword_slash2": [13.0, 50.0, 2.3, -1.2],
 	"sword_slash3": [16.0, 50.0, 2.3, -1.2],
-	"thrust": 		[25.0, 130.0, 2.0, 0.0],
-	"plunge_full_4":     [25.0, 130.0, 2.0, 0.0],
-	"plunge_full_5":     [45.0, 400.0, 2.5, -1.5],
-};
-
+	"thrust":		[25.0, 130.0, 2.0, 0.0],
+	"plunge_full_4":[25.0, 130.0, 2.0, 0.0],
+	"plunge_full_5":[450.0, 400.0, 2.5, -1.5],
+}
 # sprint variables
 var can_run = true;
 var sprint_timer = 0.0;
@@ -181,10 +180,6 @@ func _physics_process(delta: float) -> void:
 	elif (animated_sprite.animation == "thrust" and animated_sprite.is_playing()):
 		velocity.x = thrust_direction * SPEED * 130 * delta;
 
-	elif (animated_sprite.animation == "plunge_fall"):
-		velocity.y = 1200.0;
-		velocity.x = 0;
-		
 	else:
 		if direction:
 			velocity.x = direction * speed;
@@ -231,8 +226,8 @@ func _ready() -> void:
 var fireball_instance;
 var magic_done = false;
 
-# all animation playing, pausing, terminating happens here also 
-func _process(delta: float):
+# all animation playing, pausing, terminating happens here also
+func _process(delta: float):	
 	if (Input.is_action_just_pressed("ui_thrust")):
 		magic_done = false;
 	
@@ -247,6 +242,11 @@ func _process(delta: float):
 		$player_collision_box.scale.x = velocity_condition;
 		walking_particles.position.x = 35.0 if velocity.x < 0 else -35.0;
 
+	if animated_sprite.animation == "heal":
+		animated_sprite.scale = base_sprite_scale * 0.4;
+	else:
+		animated_sprite.scale = base_sprite_scale;
+	
 	# sprint cooldown
 	if not can_run:
 		sprint_timer += delta;
@@ -323,20 +323,26 @@ func _process(delta: float):
 			if (Input.is_action_just_pressed("magic_fireball") and (global.current_mana > 40)):
 				animated_sprite.play("fireball_1");
 				can_input = false;
-				
 				idle_time = 0.0;
 				global.current_mana -= 40;
+				magic_done = true;
+				
+			# heal
+			if (Input.is_action_just_pressed("ui_heal") and (global.current_mana > 30)):
+				animated_sprite.play("heal");
+				can_input = false;
+				idle_time = 0.0;
+				global.current_mana -= 30;
+				global.current_health += 50;
 				magic_done = true;
 			
 			# magic shield
 			elif (Input.is_action_just_pressed("magic_shield") and (global.current_mana > 35)):
 				animated_sprite.play("shield");
 				can_input = false;
-				
 				idle_time = 0.0;
 				global.current_mana -= 35;
 				magic_done = true;
-				
 				global.current_defence += 0.5;
 		
 		# thrust attack
@@ -456,7 +462,7 @@ func _process(delta: float):
 		# logic checks whether the animation is sword_slash1 or sword_slash2
 		# and attack key pressed before the timer exceeds the cooldown
 		# and the combo counter is lesser than max value
-		elif ((anim == "sword_slash1" or anim == "sword_slash2") and
+		if ((anim == "sword_slash1" or anim == "sword_slash2") and
 			Input.is_action_just_pressed("ui_attack") and current_combo_counter < MAX_COMBO
 		):
 			queue_next_combo = true;
@@ -482,7 +488,6 @@ func _process(delta: float):
 
 	global.player_position = position;
 	walking_particles.emitting = walking_particles.emitting if is_on_floor() else false;
-	
 
 # sword attacks hitboxes check for enemy attacks
 func _on_sword_hitbox_body_entered(body: Node2D) -> void:
