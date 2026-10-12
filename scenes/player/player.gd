@@ -9,6 +9,8 @@ extends CharacterBody2D
 
 # preloading fireballs to load them later
 var fireball_scene = preload("res://scenes/Magic/fireball.tscn");
+var game_over_scene = preload("res://scenes/Game_UI/game_over.tscn");
+var is_dead = false;
 
 # jumping variables
 var is_jumping = false;
@@ -121,10 +123,18 @@ func play_campfire_animation(player_adjustment, look_right) -> void:
 	$player_collision_box.scale.x = look_right
 
 	animated_sprite.play("campfire")
-
 	
+
 # all player movements happen here
 func _physics_process(delta: float) -> void:
+	
+	if is_dead:
+		velocity.x = move_toward(velocity.x, 0, SPEED);
+		if not is_on_floor():
+			velocity += get_gravity() * delta;
+		move_and_slide();
+		return;
+	
 	var was_on_floor = is_on_floor();
 	var is_plunging_rising = animated_sprite.animation in ["plunge_full_2","plunge_full_3"];
 	
@@ -228,6 +238,20 @@ var magic_done = false;
 
 # all animation playing, pausing, terminating happens here also
 func _process(delta: float):	
+	
+	if global.current_health <= 0 and not is_dead:
+		is_dead = true;
+		can_input = false;
+		disable_all_hitboxes();
+		
+		var game_over = game_over_scene.instantiate();
+		get_tree().current_scene.add_child(game_over);
+		
+	if is_dead:
+		velocity.x = move_toward(velocity.x, 0 , SPEED);
+		return;
+	
+	
 	if (Input.is_action_just_pressed("ui_thrust")):
 		magic_done = false;
 	

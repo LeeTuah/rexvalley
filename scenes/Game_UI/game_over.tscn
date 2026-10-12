@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://t25bsibeisri"]
+
+[ext_resource type="Script" uid="uid://qvrpo17b0r7n" path="res://scenes/Game_UI/game_over.gd" id="1_lcun7"]
+
+[node name="game_over" type="CanvasLayer" unique_id=802795320]
+script = ExtResource("1_lcun7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=575366591]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="Label" type="Label" parent="." unique_id=2026934413]
+offset_left = 451.0
+offset_top = 155.0
+offset_right = 1128.0
+offset_bottom = 574.0
+theme_override_font_sizes/font_size = 80
+text = "GAME OVER!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="restart_button" type="Button" parent="." unique_id=1963993677]
+offset_left = 703.0
+offset_top = 489.0
+offset_right = 887.0
+offset_bottom = 632.0
+theme_override_font_sizes/font_size = 34
+text = "TRY AGAIN"
+
+[connection signal="pressed" from="restart_button" to="." method="_on_restart_button_pressed"]
