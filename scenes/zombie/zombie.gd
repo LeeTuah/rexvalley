@@ -45,6 +45,7 @@ func take_damage(damage: float, direction: Vector2, knockback: float, knockback_
 	if (zombie_dead): return;
 
 	health_point -= damage;
+	print("hit with damage : ", damage)
 	health_point = clamp(health_point, 0.0, MAX_HEALTH);
 	if (health_point <= 0.0):
 		death_blood.emitting = true

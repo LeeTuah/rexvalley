@@ -1,6 +1,6 @@
 extends Node2D
 
-func swap_levels(old_scene, new_scene_path, _player_coordinates, next_door: String) -> void:
+func swap_levels(old_scene, new_scene_path, _player_coordinates, next_door = null) -> void:
 	var current_level = old_scene;
 
 	if current_level:
@@ -15,7 +15,9 @@ func swap_levels(old_scene, new_scene_path, _player_coordinates, next_door: Stri
 	# change player position here
 	get_node("player").position = _player_coordinates
 	
-	close_door_on_enter(next_door, new_scene_instance)
+	
+	if next_door:
+		close_door_on_enter(next_door, new_scene_instance)
 
 
 func close_door_on_enter(door_name: String, current_level_instance : Node) -> void:
@@ -24,6 +26,9 @@ func close_door_on_enter(door_name: String, current_level_instance : Node) -> vo
 
 func _ready() -> void:
 	pass
-
+		
 func _process(_delta: float) -> void:
 	pass
+	
+#func show_tree():
+	#print_tree_pretty()

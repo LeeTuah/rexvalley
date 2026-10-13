@@ -314,34 +314,34 @@ animations = [{
 [node name="level0_enclosure" type="Node2D" unique_id=456531622]
 script = ExtResource("1_c5bwv")
 
-[node name="Node2D" type="Node2D" parent="." unique_id=876745373]
+[node name="light_nodes" type="Node2D" parent="." unique_id=876745373]
 
-[node name="PointLight2D" type="PointLight2D" parent="Node2D" unique_id=1448785209]
+[node name="PointLight2D" type="PointLight2D" parent="light_nodes" unique_id=1448785209]
 position = Vector2(-1201.9996, 29.000015)
 scale = Vector2(3.7, 3.7)
 texture = ExtResource("3_pyekh")
 
-[node name="PointLight2D2" type="PointLight2D" parent="Node2D" unique_id=57545277]
+[node name="PointLight2D2" type="PointLight2D" parent="light_nodes" unique_id=57545277]
 position = Vector2(-4558.0005, 125.000015)
 scale = Vector2(3.7, 3.7)
 texture = ExtResource("3_pyekh")
 
-[node name="PointLight2D3" type="PointLight2D" parent="Node2D" unique_id=352268183]
+[node name="PointLight2D3" type="PointLight2D" parent="light_nodes" unique_id=352268183]
 position = Vector2(-7535.0005, 122.00001)
 scale = Vector2(3.7, 3.7)
 texture = ExtResource("3_pyekh")
 
-[node name="PointLight2D4" type="PointLight2D" parent="Node2D" unique_id=787885339]
+[node name="PointLight2D4" type="PointLight2D" parent="light_nodes" unique_id=787885339]
 position = Vector2(-6093, 124.000015)
 scale = Vector2(3.7, 3.7)
 texture = ExtResource("3_pyekh")
 
-[node name="PointLight2D5" type="PointLight2D" parent="Node2D" unique_id=20849223]
+[node name="PointLight2D5" type="PointLight2D" parent="light_nodes" unique_id=20849223]
 position = Vector2(-9554.001, 546.00006)
 scale = Vector2(3.7, 3.7)
 texture = ExtResource("3_pyekh")
 
-[node name="campfire_light" type="PointLight2D" parent="Node2D" unique_id=1404872225]
+[node name="campfire_light" type="PointLight2D" parent="light_nodes" unique_id=1404872225]
 position = Vector2(24, 532)
 scale = Vector2(2.1, 2.1)
 energy = 0.4
@@ -411,5 +411,6 @@ frame_progress = 1.0
 [node name="campfire" parent="." unique_id=1293370023 instance=ExtResource("8_ntbxl")]
 position = Vector2(24, 533)
 campfire_name = "campfire_enclosure"
+campfire_scene = "res://scenes/levels/level0_enclosure.tscn"
 
 [connection signal="body_entered" from="boss_spawn_area" to="." method="_on_boss_spawn_area_body_entered"]

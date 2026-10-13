@@ -52,6 +52,7 @@ var IDLE_TIMES = {
 	#"plunge_full_4": 0.3,
 	"plunge_full_5": 0.625,
 	"heal": 2.7,
+	"resting": 1.12
 };
 
 
@@ -62,8 +63,8 @@ var DAMAGE_OUTPUTS = {
 	"sword_slash2": [13.0, 50.0, 2.3, -1.2],
 	"sword_slash3": [16.0, 50.0, 2.3, -1.2],
 	"thrust":		[25.0, 130.0, 2.0, 0.0],
-	"plunge_full_4":[25.0, 130.0, 2.0, 0.0],
-	"plunge_full_5":[450.0, 400.0, 2.5, -1.5],
+	"plunge_full_4":[450.0, 400.0, 2.5, -1.5],
+	"plunge_full_5":[25.0, 130.0, 2.0, 0.0],
 }
 # sprint variables
 var can_run = true;
@@ -125,6 +126,12 @@ func play_campfire_animation(player_adjustment, look_right) -> void:
 	animated_sprite.play("campfire")
 	
 
+func play_resting_animation() -> void:
+	is_interacting = true
+	can_input = false
+	idle_time = 0.0
+	animated_sprite.play("resting")
+	
 # all player movements happen here
 func _physics_process(delta: float) -> void:
 	
@@ -179,9 +186,11 @@ func _physics_process(delta: float) -> void:
 	elif (animated_sprite.animation == "plunge_full_2"):
 		velocity.y = JUMP_VELOCITY * 3.0;
 		velocity.x = direction * SPEED * 0.4;
+		
 	elif (animated_sprite.animation == "plunge_full_3"):
 		velocity.y = 0.0;
 		velocity.x = 0.0;
+		
 	elif (animated_sprite.animation == "plunge_full_4"):
 		velocity.y = 1700.0;
 		velocity.x = 0.0;
@@ -230,14 +239,19 @@ func _physics_process(delta: float) -> void:
 
 
 func _ready() -> void:
-	global.player_position = position;
+	#global.player_position = position;
 	walking_particles.emitting = false;
 
 var fireball_instance;
 var magic_done = false;
 
 # all animation playing, pausing, terminating happens here also
-func _process(delta: float):	
+func _process(delta: float):
+	
+	if global.respawning:
+		can_input = true
+		is_dead = false
+		global.respawning = false
 	
 	if global.current_health <= 0 and not is_dead:
 		is_dead = true;
@@ -248,10 +262,9 @@ func _process(delta: float):
 		get_tree().current_scene.add_child(game_over);
 		
 	if is_dead:
-		velocity.x = move_toward(velocity.x, 0 , SPEED);
 		return;
-	
-	
+
+
 	if (Input.is_action_just_pressed("ui_thrust")):
 		magic_done = false;
 	
@@ -464,6 +477,11 @@ func _process(delta: float):
 						$sword_hitbox/sword_slash3_hitbox.set_deferred("disabled", false);
 
 				elif anim == "campfire":
+					is_interacting = false
+					can_input = true
+					disable_all_hitboxes()
+					
+				elif anim == "resting":
 					is_interacting = false
 					can_input = true
 					disable_all_hitboxes()

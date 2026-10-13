@@ -17,6 +17,10 @@ var campfire_status = {
 	"campfire_enclosure" : false
 }
 
+var last_rested_scene = ""
+var last_rested_coords = ""
+var respawning:bool = false
+
 
 var player_direction :float = 1;
 var player_position = Vector2(0.0, 0.0);
@@ -56,6 +60,7 @@ func rest_player():
 	current_health = MAX_HEALTH
 	current_stamina = MAX_STAMINA
 	current_mana = MAX_MANA
+	current_defence = 0
 
 
 const FADE_IN_DURATION = 0.3;

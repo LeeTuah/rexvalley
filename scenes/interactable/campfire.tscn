@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ce08onc284sxx" path="res://scenes/interactable/campfire.gd" id="1_4v1kl"]
 [ext_resource type="Texture2D" uid="uid://bfmkucinmvwne" path="res://assets/tiles/campfire.png" id="1_ta3ij"]
+[ext_resource type="FontFile" uid="uid://nln6p8r4gwnp" path="res://assets/font/upheavtt.ttf" id="3_stngb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4v1kl"]
 atlas = ExtResource("1_ta3ij")
@@ -82,6 +83,13 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nrgbc"]
 size = Vector2(41.5, 48.5)
 
+[sub_resource type="LabelSettings" id="LabelSettings_4v1kl"]
+font = ExtResource("3_stngb")
+font_size = 48
+outline_size = 1
+outline_color = Color(0.99022573, 0.8626507, 0.795046, 1)
+shadow_size = 0
+
 [node name="campfire" type="Area2D" unique_id=1293370023]
 script = ExtResource("1_4v1kl")
 
@@ -96,6 +104,16 @@ frame_progress = 0.5092937
 position = Vector2(0.5, -2.5)
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_nrgbc")
+
+[node name="campfire_label" type="Label" parent="." unique_id=1155835777]
+offset_left = -83.0
+offset_top = -184.0
+offset_right = 84.0
+offset_bottom = -111.0
+text = "	IGNITE"
+label_settings = SubResource("LabelSettings_4v1kl")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

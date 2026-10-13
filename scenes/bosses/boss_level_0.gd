@@ -119,7 +119,7 @@ func _on_sword_hitbox_body_entered(body: Node2D) -> void:
 		var dmg = 0;
 		match state_machine.get_current_node():
 			"sword_slash_up":
-				dmg = 10;
+				dmg = 1000;
 
 			"sword_slash_down":
 				dmg = 15;
